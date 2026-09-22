@@ -1,0 +1,342 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78545e3986cfce14f80aec554be13a99, type: 3}
+  m_Name: Demo
+  m_EditorClassIdentifier: 
+  m_nodes:
+  - rid: 5387870280149631041
+  - rid: 5387870280149631042
+  - rid: 5387870280149631043
+  - rid: 5387870280149631044
+  - rid: 5387870280149631045
+  - rid: 5387870280149631046
+  - rid: 5387870280149631047
+  - rid: 5387870280149631048
+  - rid: 5387870280149631049
+  - rid: 5387870280149631050
+  - rid: 5387870280149631051
+  - rid: 5387870280149631052
+  - rid: 5387870280149631053
+  - rid: 5387870280149631056
+  - rid: 5387870280149631057
+  m_connections:
+  - inputPort:
+      nodeId: 4d50b71f-194d-462f-adc8-22dcb08b31fd
+      portIndex: 0
+    outputPort:
+      nodeId: d4059a50-6880-43ad-ac79-2e014ee62125
+      portIndex: 1
+  - inputPort:
+      nodeId: 4d50b71f-194d-462f-adc8-22dcb08b31fd
+      portIndex: 1
+    outputPort:
+      nodeId: a4a1d011-2a13-459e-be92-b119e8463ba4
+      portIndex: 0
+  - inputPort:
+      nodeId: 6f7e0815-6705-4e2f-8204-bfeeeb9da559
+      portIndex: 0
+    outputPort:
+      nodeId: a4a1d011-2a13-459e-be92-b119e8463ba4
+      portIndex: 1
+  - inputPort:
+      nodeId: 4d50b71f-194d-462f-adc8-22dcb08b31fd
+      portIndex: 1
+    outputPort:
+      nodeId: a2e0a06b-cd60-4d41-9b07-4ff2fab6d26c
+      portIndex: 0
+  - inputPort:
+      nodeId: a2e0a06b-cd60-4d41-9b07-4ff2fab6d26c
+      portIndex: 0
+    outputPort:
+      nodeId: a4a1d011-2a13-459e-be92-b119e8463ba4
+      portIndex: 1
+  - inputPort:
+      nodeId: 97b7aa7c-6be6-40a1-8860-48aabe57bc3f
+      portIndex: 0
+    outputPort:
+      nodeId: bcf30c91-e5ee-4ca4-be0a-508b92d3c27f
+      portIndex: 1
+  - inputPort:
+      nodeId: 97b7aa7c-6be6-40a1-8860-48aabe57bc3f
+      portIndex: 0
+    outputPort:
+      nodeId: a2e0a06b-cd60-4d41-9b07-4ff2fab6d26c
+      portIndex: 1
+  - inputPort:
+      nodeId: 97b7aa7c-6be6-40a1-8860-48aabe57bc3f
+      portIndex: 1
+    outputPort:
+      nodeId: fa620d44-144d-4535-a26b-888c541c7fcb
+      portIndex: 0
+  - inputPort:
+      nodeId: a2e0a06b-cd60-4d41-9b07-4ff2fab6d26c
+      portIndex: 1
+    outputPort:
+      nodeId: db490785-f86d-42ec-a023-02f0ed9809ec
+      portIndex: 0
+  - inputPort:
+      nodeId: b16be7b2-b6d2-4f59-b335-e0e5e48cb8d8
+      portIndex: 0
+    outputPort:
+      nodeId: db490785-f86d-42ec-a023-02f0ed9809ec
+      portIndex: 1
+  - inputPort:
+      nodeId: a9f27478-c36d-46a7-8ff9-22641a5374e7
+      portIndex: 0
+    outputPort:
+      nodeId: fa620d44-144d-4535-a26b-888c541c7fcb
+      portIndex: 1
+  - inputPort:
+      nodeId: a9f27478-c36d-46a7-8ff9-22641a5374e7
+      portIndex: 1
+    outputPort:
+      nodeId: c37dbd89-c58f-4de0-a0fc-c4d786bf9e76
+      portIndex: 0
+  - inputPort:
+      nodeId: a5afbe31-1043-4775-a6b5-72f71ca956ea
+      portIndex: 0
+    outputPort:
+      nodeId: c37dbd89-c58f-4de0-a0fc-c4d786bf9e76
+      portIndex: 1
+  - inputPort:
+      nodeId: 1ad99211-fda7-4f0e-ad2d-4a25d86c0067
+      portIndex: 0
+    outputPort:
+      nodeId: bcf30c91-e5ee-4ca4-be0a-508b92d3c27f
+      portIndex: 1
+  - inputPort:
+      nodeId: 87235a6c-4fe7-435b-956d-a6db40eacc55
+      portIndex: 0
+    outputPort:
+      nodeId: bcf30c91-e5ee-4ca4-be0a-508b92d3c27f
+      portIndex: 1
+  m_organicTuning:
+    idealDistance: 20
+    chaosFactor: 0
+    forceMode: 0
+    maxRoomRegenerations: 3
+  m_floodFillTuning:
+    idealDistance: 10
+    chaosFactor: 1
+    forceMode: 0
+    maxRoomRegenerations: 3
+  references:
+    version: 2
+    RefIds:
+    - rid: 5387870280149631041
+      type: {class: StartNode, ns: DungeonGraph, asm: DungeonGraph.Runtime}
+      data:
+        m_guid: d4059a50-6880-43ad-ac79-2e014ee62125
+        m_position:
+          serializedVersion: 2
+          x: 259.7102
+          y: 355.94202
+          width: 0
+          height: 0
+        m_spawnChance: 100
+        typeName: DungeonGraph.StartNode, DungeonGraph.Runtime, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
+    - rid: 5387870280149631042
+      type: {class: BasicNode, ns: DungeonGraph, asm: DungeonGraph.Runtime}
+      data:
+        m_guid: 4d50b71f-194d-462f-adc8-22dcb08b31fd
+        m_position:
+          serializedVersion: 2
+          x: 191.8841
+          y: 499.71017
+          width: 0
+          height: 0
+        m_spawnChance: 100
+        typeName: DungeonGraph.BasicNode, DungeonGraph.Runtime, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
+        size: 1
+    - rid: 5387870280149631043
+      type: {class: BasicNode, ns: DungeonGraph, asm: DungeonGraph.Runtime}
+      data:
+        m_guid: a4a1d011-2a13-459e-be92-b119e8463ba4
+        m_position:
+          serializedVersion: 2
+          x: -58
+          y: 566.6667
+          width: 201.33334
+          height: 66.666626
+        m_spawnChance: 100
+        typeName: DungeonGraph.BasicNode, DungeonGraph.Runtime, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
+        size: 1
+    - rid: 5387870280149631044
+      type: {class: BasicNode, ns: DungeonGraph, asm: DungeonGraph.Runtime}
+      data:
+        m_guid: 6f7e0815-6705-4e2f-8204-bfeeeb9da559
+        m_position:
+          serializedVersion: 2
+          x: -112.66667
+          y: 696
+          width: 201.33334
+          height: 66.66669
+        m_spawnChance: 100
+        typeName: DungeonGraph.BasicNode, DungeonGraph.Runtime, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
+        size: 1
+    - rid: 5387870280149631045
+      type: {class: HubNode, ns: DungeonGraph, asm: DungeonGraph.Runtime}
+      data:
+        m_guid: a2e0a06b-cd60-4d41-9b07-4ff2fab6d26c
+        m_position:
+          serializedVersion: 2
+          x: 191.33334
+          y: 662.6667
+          width: 70.66667
+          height: 45.333313
+        m_spawnChance: 100
+        typeName: DungeonGraph.HubNode, DungeonGraph.Runtime, Version=0.0.0.0, Culture=neutral,
+          PublicKeyToken=null
+    - rid: 5387870280149631046
+      type: {class: BasicNode, ns: DungeonGraph, asm: DungeonGraph.Runtime}
+      data:
+        m_guid: 97b7aa7c-6be6-40a1-8860-48aabe57bc3f
+        m_position:
+          serializedVersion: 2
+          x: 358
+          y: 641.3333
+          width: 201.33334
+          height: 66.66669
+        m_spawnChance: 100
+        typeName: DungeonGraph.BasicNode, DungeonGraph.Runtime, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
+        size: 1
+    - rid: 5387870280149631047
+      type: {class: BasicNode, ns: DungeonGraph, asm: DungeonGraph.Runtime}
+      data:
+        m_guid: bcf30c91-e5ee-4ca4-be0a-508b92d3c27f
+        m_position:
+          serializedVersion: 2
+          x: 597.3334
+          y: 566.6667
+          width: 201.33331
+          height: 66.666626
+        m_spawnChance: 100
+        typeName: DungeonGraph.BasicNode, DungeonGraph.Runtime, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
+        size: 1
+    - rid: 5387870280149631048
+      type: {class: BasicNode, ns: DungeonGraph, asm: DungeonGraph.Runtime}
+      data:
+        m_guid: fa620d44-144d-4535-a26b-888c541c7fcb
+        m_position:
+          serializedVersion: 2
+          x: 335.3333
+          y: 774.6667
+          width: 201.33334
+          height: 66.666626
+        m_spawnChance: 100
+        typeName: DungeonGraph.BasicNode, DungeonGraph.Runtime, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
+        size: 1
+    - rid: 5387870280149631049
+      type: {class: BossNode, ns: DungeonGraph, asm: DungeonGraph.Runtime}
+      data:
+        m_guid: db490785-f86d-42ec-a023-02f0ed9809ec
+        m_position:
+          serializedVersion: 2
+          x: 166.54039
+          y: 849.6644
+          width: 0
+          height: 0
+        m_spawnChance: 100
+        typeName: DungeonGraph.BossNode, DungeonGraph.Runtime, Version=0.0.0.0, Culture=neutral,
+          PublicKeyToken=null
+    - rid: 5387870280149631050
+      type: {class: EndNode, ns: DungeonGraph, asm: DungeonGraph.Runtime}
+      data:
+        m_guid: b16be7b2-b6d2-4f59-b335-e0e5e48cb8d8
+        m_position:
+          serializedVersion: 2
+          x: 163.45636
+          y: 966.8596
+          width: 0
+          height: 0
+        m_spawnChance: 100
+        typeName: DungeonGraph.EndNode, DungeonGraph.Runtime, Version=0.0.0.0, Culture=neutral,
+          PublicKeyToken=null
+    - rid: 5387870280149631051
+      type: {class: BasicNode, ns: DungeonGraph, asm: DungeonGraph.Runtime}
+      data:
+        m_guid: c37dbd89-c58f-4de0-a0fc-c4d786bf9e76
+        m_position:
+          serializedVersion: 2
+          x: 396
+          y: 990.6667
+          width: 201.33334
+          height: 66.66669
+        m_spawnChance: 100
+        typeName: DungeonGraph.BasicNode, DungeonGraph.Runtime, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
+        size: 1
+    - rid: 5387870280149631052
+      type: {class: RewardNode, ns: DungeonGraph, asm: DungeonGraph.Runtime}
+      data:
+        m_guid: a9f27478-c36d-46a7-8ff9-22641a5374e7
+        m_position:
+          serializedVersion: 2
+          x: 429.3333
+          y: 872
+          width: 90.66666
+          height: 45.333313
+        m_spawnChance: 100
+        typeName: DungeonGraph.RewardNode, DungeonGraph.Runtime, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
+    - rid: 5387870280149631053
+      type: {class: RewardNode, ns: DungeonGraph, asm: DungeonGraph.Runtime}
+      data:
+        m_guid: a5afbe31-1043-4775-a6b5-72f71ca956ea
+        m_position:
+          serializedVersion: 2
+          x: 491.3333
+          y: 1094.6666
+          width: 90.66666
+          height: 45.333374
+        m_spawnChance: 100
+        typeName: DungeonGraph.RewardNode, DungeonGraph.Runtime, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
+    - rid: 5387870280149631056
+      type: {class: CustomNode, ns: DungeonGraph, asm: DungeonGraph.Runtime}
+      data:
+        m_guid: 1ad99211-fda7-4f0e-ad2d-4a25d86c0067
+        m_position:
+          serializedVersion: 2
+          x: 660
+          y: 729.3333
+          width: 96.66669
+          height: 45.333374
+        m_spawnChance: 100
+        typeName: DungeonGraph.CustomNode, DungeonGraph.Runtime, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
+        m_customTypeGuid: 48d6da66-b439-412a-893d-ab6aaa773981
+        m_customTypeName: Upgrade
+        m_customColor: {r: 0, g: 1, b: 0.95864654, a: 1}
+    - rid: 5387870280149631057
+      type: {class: CustomNode, ns: DungeonGraph, asm: DungeonGraph.Runtime}
+      data:
+        m_guid: 87235a6c-4fe7-435b-956d-a6db40eacc55
+        m_position:
+          serializedVersion: 2
+          x: 750
+          y: 454.66666
+          width: 96.66669
+          height: 45.333344
+        m_spawnChance: 100
+        typeName: DungeonGraph.CustomNode, DungeonGraph.Runtime, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
+        m_customTypeGuid: 48d6da66-b439-412a-893d-ab6aaa773981
+        m_customTypeName: Upgrade
+        m_customColor: {r: 0, g: 1, b: 0.95864654, a: 1}

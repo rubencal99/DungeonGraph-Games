@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df55947951bd24a2289f1f1d3bfd038d, type: 3}
+  m_Name: Default_Pistol
+  m_EditorClassIdentifier: 
+  FireRate: 3.5
+  AmmoCapacity: 1200
+  SpreadAngle: 4
+  RecoilBloomPerShot: 1.5
+  MaxBloomAngle: 15
+  BloomRecoverySpeed: 20
+  ProjectilePrefab: {fileID: 7370590495690014016, guid: 3810d35f9da474b1895a5fe34538cb33, type: 3}
+  ProjectileSpeed: 30
+  ProjectileSize: 1
+  Damage: 10

@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d4217d750fb9564fa003151a1c09340, type: 3}
+  m_Name: DefaultCustomNodeTypeRegistry
+  m_EditorClassIdentifier: 
+  m_customNodeTypes:
+  - m_typeName: Shop
+    m_color: {r: 1, g: 1, b: 1, a: 1}
+    m_guid: b0a8c95c-f55a-46b6-b4cb-46323ce1769d
+  - m_typeName: Upgrade
+    m_color: {r: 0, g: 1, b: 0.95864654, a: 1}
+    m_guid: 48d6da66-b439-412a-893d-ab6aaa773981

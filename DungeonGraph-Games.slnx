@@ -1,0 +1,8 @@
+﻿<Solution>
+  <Project Path="DungeonGraph.Editor.csproj" />
+  <Project Path="DungeonGraph.Runtime.csproj" />
+  <Project Path="Assembly-CSharp.csproj" />
+  <Project Path="Assembly-CSharp-Editor.csproj" />
+  <Project Path="DungeonGraph.Setup.Editor.csproj" />
+  <Project Path="DungeonGraph.Addressables.csproj" />
+</Solution>

@@ -1,0 +1,79 @@
+================================================================================
+DUNGEON GRAPH - THIRD-PARTY NOTICES
+================================================================================
+
+Package:  Dungeon Graph
+Version:  1.0.0
+Updated:  15 August 2026
+
+--------------------------------------------------------------------------------
+1. SUMMARY
+--------------------------------------------------------------------------------
+
+All art, code, prefabs, scenes, ScriptableObjects and documentation shipped inside
+the Assets/DungeonGraph folder were created by the publisher of this package and
+are distributed under the Unity Asset Store End User License Agreement (Unity
+Asset Store EULA), available at:
+
+    https://unity.com/legal/as-terms
+
+This package contains NO third-party fonts, NO third-party audio, NO third-party
+images, NO third-party 3D models and NO third-party source code.
+
+The package does depend on several Unity Technologies packages at compile time.
+Those packages are NOT redistributed inside this package -- they are installed by
+the user through the Unity Package Manager, and remain governed by their own
+licenses. They are listed in section 3 for transparency.
+
+--------------------------------------------------------------------------------
+2. ORIGINAL CONTENT
+--------------------------------------------------------------------------------
+
+The following are original works of the publisher. No third-party license applies.
+
+    Assets/DungeonGraph/Scripts/**            All C# source code
+    Assets/DungeonGraph/Scripts/Editor/USS/   Editor stylesheet (USS)
+    Assets/DungeonGraph/Tiles/Tile_1.png      Solid placeholder tile sprite
+    Assets/DungeonGraph/Tiles/Tile_2.png      Solid placeholder tile sprite
+    Assets/DungeonGraph/Tiles/Tile_3.png      Solid placeholder tile sprite
+    Assets/DungeonGraph/Tiles/Tile_4.png      Solid placeholder tile sprite
+    Assets/DungeonGraph/Tiles/*.asset         Rule Tile assets
+    Assets/DungeonGraph/References/*.png      Package icon artwork
+    Assets/DungeonGraph/Dungeon_Floors/**     Sample room prefabs
+    Assets/DungeonGraph/Dungeon_Graphs/**     Sample dungeon graph assets
+    Assets/DungeonGraph/Prefabs/**            Support prefabs
+    Assets/DungeonGraph/Scenes/**             Sample scenes
+    Assets/DungeonGraph/Documentation/**      Documentation
+
+The bundled tile sprites are deliberately plain solid colours. They exist so the
+sample rooms render out of the box; they are not intended as production art. See
+Documentation/3_Room_Authoring.md for how to swap in your own tile set.
+
+--------------------------------------------------------------------------------
+3. UNITY PACKAGE DEPENDENCIES (NOT REDISTRIBUTED)
+--------------------------------------------------------------------------------
+
+Dungeon Graph requires the following packages from Unity Technologies. They are
+installed by the user via the Unity Package Manager and are not included in this
+package. Each is governed by the Unity Companion License unless its own package
+states otherwise.
+
+    com.unity.addressables        Addressables
+    com.unity.2d.tilemap          2D Tilemap
+    com.unity.2d.tilemap.extras   2D Tilemap Extras
+    com.unity.2d.sprite           2D Sprite
+
+Unity Companion License:
+    https://unity.com/legal/licenses/unity-companion-license
+
+Unity Package Manager package licenses are also viewable inside the Editor at
+Window > Package Manager, by selecting a package and opening "View licenses".
+
+--------------------------------------------------------------------------------
+4. CONTACT
+--------------------------------------------------------------------------------
+
+Questions about licensing or attribution for this package should be directed to
+the publisher through the Unity Asset Store product page.
+
+================================================================================

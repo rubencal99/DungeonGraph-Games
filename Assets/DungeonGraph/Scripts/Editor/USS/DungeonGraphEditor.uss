@@ -1,0 +1,192 @@
+DungeonGraphView
+{
+    flex-grow: 1;
+}
+#Grid
+{
+    --thick-lines: 0;
+    --spacing:15;
+    --grid-background-color: rgb(35, 35, 35);
+    --line-color: rgb(32, 32, 32);
+}
+
+/* Base look - uniform square nodes */
+.dungeon-node .main-container {
+  background-color: rgba(28,28,30,1);
+  border-radius: 8px;
+  border-width: 2px;
+  border-color: rgba(60, 60, 60, 0.8);
+  min-width: 100px;
+  min-height: 100px;
+  max-width: 100px;
+  max-height: 100px;
+  padding: 0px;
+}
+
+/* Title positioning - top left corner */
+.dungeon-node .title-container {
+  background-color: transparent;
+  position: absolute;
+  left: 8px;
+  top: 8px;
+  right: 8px;
+  padding: 0px;
+  margin: 0px;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+/* Title text styling */
+.dungeon-node .title-container > Label {
+  padding: 0px;
+  margin: 0px;
+  font-size: 12px;
+  -unity-font-style: bold;
+  color: rgba(255, 255, 255, 0.9);
+  -unity-text-align: upper-left;
+}
+
+/* Extension container at bottom (for nodes with properties) */
+.dungeon-node .extension-container {
+  background-color: rgba(0, 0, 0, 0.3);
+  padding: 6px;
+  margin-top: 0px;
+  border-top-width: 1px;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Center port container - centered in the node */
+.dungeon-node #center-port-container {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+/* The visible center jack - larger and more prominent */
+.dungeon-node #center-jack.jack {
+  width: 24px;
+  height: 24px;
+  border-width: 2px;
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Circle shape */
+.dungeon-node #center-jack.jack--circle {
+  border-radius: 999px;
+}
+
+/* Hide the built-in port caps */
+.dungeon-node .port .connector {
+  width: 0px;
+  height: 0px;
+  opacity: 0;
+}
+
+/* Tighten up property fields in extension container */
+.dungeon-node .extension-container .unity-property-field {
+  margin-top: 2px;
+  margin-bottom: 2px;
+}
+
+.dungeon-node .extension-container .unity-property-field__label {
+  min-width: 40px;
+  font-size: 10px;
+}
+
+.dungeon-node .extension-container .unity-enum-field__input {
+  font-size: 10px;
+}
+
+/* Colors per node type - center jack colors */
+.node-start   #center-jack { background-color: #006400; }
+.node-basic   #center-jack { background-color: #00008B; }
+.node-hub     #center-jack { background-color: #411B8B; }
+.node-end     #center-jack { background-color: #FF8C00; }
+.node-debug   #center-jack { background-color: #fbbf24; }
+.node-boss    #center-jack { background-color: #fb2424; }
+.node-reward  #center-jack { background-color: #fad700; }
+
+/* Custom nodes get their colors applied dynamically via C# */
+.node-custom #center-jack {
+  /* Colors set dynamically in DungeonGraphEditorNode.ApplyCustomNodeColors */
+}
+
+.node-custom .main-container {
+  /* Colors set dynamically in DungeonGraphEditorNode.ApplyCustomNodeColors */
+}
+
+/* Node background colors - subtle tints matching the jack color */
+.node-start .main-container {
+  background-color: #001a00;
+  border-color: #006400;
+}
+
+.node-basic .main-container {
+  background-color: #00001a;
+  border-color: #00008B;
+}
+
+.node-hub .main-container {
+  background-color: #150a1f;
+  border-color: #411B8B;
+}
+
+.node-end .main-container {
+  background-color: #331a00;
+  border-color: #FF8C00;
+}
+
+.node-debug .main-container {
+  background-color: #2d2512;
+  border-color: #fbbf24;
+}
+
+.node-boss .main-container {
+  background-color: #2d1212;
+  border-color: #fb2424;
+}
+
+.node-reward .main-container {
+  background-color: #2d2812;
+  border-color: #fad700;
+}
+
+/* Nodes with extension containers need more height */
+.node-basic .main-container {
+  min-height: 120px;
+  max-height: 120px;
+}
+
+.node-debug .main-container {
+  min-height: 120px;
+  max-height: 120px;
+}
+
+/* Selection highlight */
+.dungeon-node:selected .main-container {
+  border-width: 3px;
+  border-color: rgba(255, 255, 255, 0.9);
+}
+
+/* Hover effect */
+.dungeon-node:hover .main-container {
+  border-color: rgba(255, 255, 255, 0.6);
+}
+
+/* Section styling for Actions and Basic Settings */
+.section-header {
+  font-size: 14px;
+  -unity-font-style: bold;
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.section-sub-header {
+  font-size: 14px;
+  -unity-font-style: bold;
+  color: rgba(125, 125, 125, 1);
+}

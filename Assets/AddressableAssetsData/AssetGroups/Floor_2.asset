@@ -1,0 +1,154 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Floor_2
+  m_EditorClassIdentifier: 
+  m_GroupName: Floor_2
+  m_GUID: 440fa3e3ce5714a828a1840441f073bb
+  m_SerializeEntries:
+  - m_GUID: 065e5539a562dd642a5ae5952df7bdad
+    m_Address: Assets/DungeonGraph/Dungeon_Floors/Floor_2/Shop/Room_F2_Shop_1.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Floor_2
+    - Shop
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0ef6f1ee7a766054a9a45d573ac00c6b
+    m_Address: Assets/DungeonGraph/Dungeon_Floors/Floor_2/Basic/Small/Room_F2_Basic_Small_4.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Basic_Small
+    - Floor_2
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 101b4882d3c4f8049beb7627e06085e8
+    m_Address: Assets/DungeonGraph/Dungeon_Floors/Floor_2/Reward/Room_F2_Reward_1.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Floor_2
+    - Reward
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2b2a4bdce1611d2438114308d2e186b0
+    m_Address: Assets/DungeonGraph/Dungeon_Floors/Floor_2/Basic/Small/Room_F2_Basic_Small_1.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Basic_Small
+    - Floor_2
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3d971b71c2b78bc4b8188272154259b3
+    m_Address: Assets/DungeonGraph/Dungeon_Floors/Floor_2/Upgrade/Room_F2_Upgrade_1.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Floor_2
+    - Upgrade
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 48ac036e582f28048981798f69334bf8
+    m_Address: Assets/DungeonGraph/Dungeon_Floors/Floor_2/Start/Room_F2_Start_1.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Floor_2
+    - Start
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 79d5a1d0a00c00846a4f07b6456889e8
+    m_Address: Assets/DungeonGraph/Dungeon_Floors/Floor_2/Basic/Medium/Room_F2_Basic_Medium_4.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Basic_Medium
+    - Floor_2
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 81dc415b3cc29ba4a8046d733ac58d88
+    m_Address: Assets/DungeonGraph/Dungeon_Floors/Floor_2/Basic/Small/Room_F2_Basic_Small_3.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Basic_Small
+    - Floor_2
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 87a5452826239be4f942e333efc00f06
+    m_Address: Assets/DungeonGraph/Dungeon_Floors/Floor_2/Debug/Room_F2_Debug_1.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Debug
+    - Floor_2
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8ff240d9ad161c34a8045072ff6132de
+    m_Address: Assets/DungeonGraph/Dungeon_Floors/Floor_2/Basic/Medium/Room_F2_Basic_Medium_3.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Basic_Medium
+    - Floor_2
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 912a910216f2bd74db97232f17b40a22
+    m_Address: Assets/DungeonGraph/Dungeon_Floors/Floor_2/Basic/Small/Room_F2_Basic_Small_2.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Basic_Small
+    - Floor_2
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9dc26c48fab67534aa99e2e2ad0d7d08
+    m_Address: Assets/DungeonGraph/Dungeon_Floors/Floor_2/End/Room_F2_End_1.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - End
+    - Floor_2
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a4918a70f84c8e0498575ef34d58ddfc
+    m_Address: Assets/DungeonGraph/Dungeon_Floors/Floor_2/Boss/Room_F2_Boss_1.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Boss
+    - Floor_2
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b433632a56fc0dd4394c07a9f2319d54
+    m_Address: Assets/DungeonGraph/Dungeon_Floors/Floor_2/Basic/Medium/Room_F2_Basic_Medium_1.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Basic_Medium
+    - Floor_2
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: be4a510d14b678144908e048f961ab4a
+    m_Address: Assets/DungeonGraph/Dungeon_Floors/Floor_2/Basic/Medium/Room_F2_Basic_Medium_5.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Basic_Medium
+    - Floor_2
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c2102180effb2fb48aa1ab57207baf43
+    m_Address: Assets/DungeonGraph/Dungeon_Floors/Floor_2/Basic/Medium/Room_F2_Basic_Medium_2.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Basic_Medium
+    - Floor_2
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d2407c84617112349a8ec7c89cafe650
+    m_Address: Assets/DungeonGraph/Dungeon_Floors/Floor_2/Hub/Room_F2_Hub_1.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Floor_2
+    - Hub
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f109745ff36d4814e8b6200f70f7cf39
+    m_Address: Assets/DungeonGraph/Dungeon_Floors/Floor_2/Basic/Large/Room_F2_Basic_Large_1.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Basic_Large
+    - Floor_2
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: ce7eacf43bfa7404a80a33c137f878a3, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: a469e607cda8946baafb6ef388e3f1a7, type: 2}
+    - {fileID: 11400000, guid: 5789e5befc1ba4fcab458aa6fa76e992, type: 2}
+    m_SchemaDisplayOrder:
+    - Floor_2_BundledAssetGroupSchema
+    - Floor_2_ContentUpdateGroupSchema
+  m_IncludeInBuild: 1
+  m_IncludeInBuildMigrated: 1

@@ -1,0 +1,63 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &9136524559363154641
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 450906198634916001}
+  - component: {fileID: 5903256508155583426}
+  m_Layer: 0
+  m_Name: DungeonGenerator
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &450906198634916001
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9136524559363154641}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5903256508155583426
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9136524559363154641}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 560ffdad7838d4f4fa72c7017f495c5a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_dungeonGraph: {fileID: 11400000, guid: 94ec86b5a57237d4fb97f0183c7011f3, type: 2}
+  m_floorLabel: Floor_1
+  m_corridorTile: {fileID: 11400000, guid: 4ad7cb543eb6e4c579b4f1602c28fcd1, type: 2}
+  m_corridorWidth: 2
+  m_corridorType: 0
+  m_maxCorridorRegenerations: 3
+  m_areaPlacementFactor: 11
+  m_repulsionFactor: 30
+  m_stiffnessFactor: 20
+  m_idealDistance: 20
+  m_simulationIterations: 400
+  m_chaosFactor: 0
+  m_bendFactor: 0
+  m_repulsionScalingMode: 0
+  m_allowRoomOverlap: 0
+  m_maxRoomRegenerations: 4
+  m_generateOnStart: 1
