@@ -10,17 +10,24 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: df55947951bd24a2289f1f1d3bfd038d, type: 3}
-  m_Name: Default_Pistol
+  m_Name: Default_Uzi
   m_EditorClassIdentifier: 
-  FireRate: 3.5
+  FireRate: 10
   AmmoCapacity: 1200
-  Accuracy: 4
-  RecoilBloomPerShot: 1.5
-  MaxBloomAngle: 15
+  Accuracy: 25
+  RecoilBloomPerShot: 1
+  MaxBloomAngle: 50
   BloomRecoverySpeed: 20
   ProjectileCount: 1
   SpreadAngle: 0
   ProjectilePrefab: {fileID: 7370590495690014016, guid: 3810d35f9da474b1895a5fe34538cb33, type: 3}
-  ProjectileSpeed: 30
+  ProjectileSpeed: 50
   ProjectileSize: 1
   Damage: 10
+  Damping: 70
+  MinVelocity: 0
+  PenetrationCount: 0
+  PenetrableLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  ReboundCount: 1

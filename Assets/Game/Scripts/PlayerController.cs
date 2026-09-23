@@ -19,6 +19,8 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] private InputActionReference m_moveAction;
     [SerializeField] private float m_moveSpeed = 5f;
+    [SerializeField] private float m_acceleration = 30f;
+    [SerializeField] private float m_deceleration = 30f;
     [SerializeField] private Animator m_animator;
 
     private Rigidbody2D m_rb;
@@ -43,9 +45,13 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
         if (m_moveAction == null) return;
-        Vector2 input = m_moveAction.action.ReadValue<Vector2>();
-        m_rb.linearVelocity = input * m_moveSpeed;
 
-        m_animator?.SetFloat(SpeedParam, input.magnitude);
+        Vector2 input = m_moveAction.action.ReadValue<Vector2>();
+        Vector2 targetVelocity = input * m_moveSpeed;
+        float rate = input.sqrMagnitude > 0.0001f ? m_acceleration : m_deceleration;
+
+        m_rb.linearVelocity = Vector2.MoveTowards(m_rb.linearVelocity, targetVelocity, rate * Time.fixedDeltaTime);
+
+        m_animator?.SetFloat(SpeedParam, m_rb.linearVelocity.magnitude / m_moveSpeed);
     }
 }

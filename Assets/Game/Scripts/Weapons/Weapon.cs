@@ -58,12 +58,24 @@ public class Weapon : MonoBehaviour
         m_nextFireTime = Time.time + 1f / m_definition.FireRate;
         m_currentAmmo--;
 
-        float halfSpread = (m_definition.SpreadAngle + m_currentBloom) * 0.5f;
-        float spreadOffset = Random.Range(-halfSpread, halfSpread);
-        float angle = m_playerAim.AimAngleDegrees + spreadOffset;
-        Vector2 direction = new Vector2(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad));
+        int count = Mathf.Max(1, m_definition.ProjectileCount);
+        float fanStep = count > 1 ? m_definition.SpreadAngle * 2f / (count - 1) : 0f;
+
+        for (int i = 0; i < count; i++)
+        {
+            float fanAngle = count == 1 ? 0f : -m_definition.SpreadAngle + fanStep * i;
+            SpawnProjectile(fanAngle);
+        }
 
         m_currentBloom = Mathf.Min(m_definition.MaxBloomAngle, m_currentBloom + m_definition.RecoilBloomPerShot);
+    }
+
+    private void SpawnProjectile(float fanAngle)
+    {
+        float halfAccuracy = (m_definition.Accuracy + m_currentBloom) * 0.5f;
+        float jitter = Random.Range(-halfAccuracy, halfAccuracy);
+        float angle = m_playerAim.AimAngleDegrees + fanAngle + jitter;
+        Vector2 direction = new Vector2(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad));
 
         Projectile projectile = ProjectilePoolManager.Instance.Get(m_definition.ProjectilePrefab, m_muzzle.position, Quaternion.Euler(0f, 0f, angle));
         projectile.Initialize(direction, m_definition.ProjectileSpeed, m_definition.ProjectileSize, m_definition.Damage, m_definition, transform.root.gameObject);

@@ -13,14 +13,25 @@ public class WeaponDefinition : ScriptableObject
     public int AmmoCapacity = 12;
 
     [Header("Accuracy")]
-    public float SpreadAngle = 4f; // degrees of random spread per shot
-    public float RecoilBloomPerShot = 1.5f; // degrees added to spread per consecutive shot
+    public float Accuracy = 4f; // degrees of random jitter per projectile
+    public float RecoilBloomPerShot = 1.5f; // degrees added to jitter per consecutive shot
     public float MaxBloomAngle = 15f;
     public float BloomRecoverySpeed = 20f; // degrees/second, while not firing
+
+    [Header("Multi-Shot")]
+    public int ProjectileCount = 1;
+    [Range(0f, 180f)] public float SpreadAngle = 0f; // half-angle the ProjectileCount projectiles fan across; 180 = full circle
 
     [Header("Projectile")]
     public Projectile ProjectilePrefab;
     public float ProjectileSpeed = 25f;
     public float ProjectileSize = 1f;
     public float Damage = 10f;
+
+    [Header("Projectile Behavior")]
+    public float Damping = 0f; // speed lost per second; 0 = no slowdown
+    public float MinVelocity = 0f; // despawns early once damping drops speed below this
+    public int PenetrationCount = 0; // extra PenetrableLayers hits survived before disappearing
+    public LayerMask PenetrableLayers;
+    public int ReboundCount = 0; // times it can bounce off a solid (non-trigger) collider before disappearing
 }
