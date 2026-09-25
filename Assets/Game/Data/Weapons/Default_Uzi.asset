@@ -12,22 +12,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df55947951bd24a2289f1f1d3bfd038d, type: 3}
   m_Name: Default_Uzi
   m_EditorClassIdentifier: 
-  FireRate: 10
+  WeaponPrefab: {fileID: 4544388895618666628, guid: 28b455235cbfc6041b86fa6a1ae4742e, type: 3}
+  Icon: {fileID: 21300000, guid: 6a6fef4c20bf4e240ba15b77f4651904, type: 3}
+  FireRate: 40
   AmmoCapacity: 1200
-  Accuracy: 25
-  RecoilBloomPerShot: 1
+  Accuracy: 40
+  RecoilBloomPerShot: 0
   MaxBloomAngle: 50
   BloomRecoverySpeed: 20
   ProjectileCount: 1
   SpreadAngle: 0
   ProjectilePrefab: {fileID: 7370590495690014016, guid: 3810d35f9da474b1895a5fe34538cb33, type: 3}
-  ProjectileSpeed: 50
+  ProjectileSpeed: 40
   ProjectileSize: 1
   Damage: 10
-  Damping: 70
+  Damping: 0
   MinVelocity: 0
   PenetrationCount: 0
   PenetrableLayers:
     serializedVersion: 2
     m_Bits: 0
-  ReboundCount: 1
+  ReboundCount: 2

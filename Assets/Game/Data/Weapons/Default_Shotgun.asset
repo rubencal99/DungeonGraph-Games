@@ -12,14 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df55947951bd24a2289f1f1d3bfd038d, type: 3}
   m_Name: Default_Shotgun
   m_EditorClassIdentifier: 
+  WeaponPrefab: {fileID: 4544388895618666628, guid: 37ef0ad4e274ff74697435a15d1fc167, type: 3}
+  Icon: {fileID: 21300000, guid: c074e8495c45a6c4b89a71d9c189e5f4, type: 3}
   FireRate: 5
   AmmoCapacity: 1200
-  Accuracy: 4
+  Accuracy: 30
   RecoilBloomPerShot: 1.5
   MaxBloomAngle: 15
   BloomRecoverySpeed: 20
-  ProjectileCount: 6
-  SpreadAngle: 25
+  ProjectileCount: 5
+  SpreadAngle: 17.8
   ProjectilePrefab: {fileID: 7370590495690014016, guid: 3810d35f9da474b1895a5fe34538cb33, type: 3}
   ProjectileSpeed: 100
   ProjectileSize: 2

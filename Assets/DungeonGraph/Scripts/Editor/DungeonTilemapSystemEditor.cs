@@ -31,7 +31,7 @@ namespace DungeonGraph.Editor
                     foreach (var template in roomTemplates)
                     {
                         // Use GameObject's instance ID as key since we don't have node IDs in this context
-                        roomInstances[template.gameObject.GetInstanceID().ToString()] = template.gameObject;
+                        roomInstances[template.gameObject.GetEntityId().ToString()] = template.gameObject;
                     }
 
                     tilemapSystem.MergeRoomsToMasterTilemap(roomInstances);

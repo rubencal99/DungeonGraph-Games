@@ -8,9 +8,9 @@ namespace DungeonGraph.Editor
     public class DungeonGraphAssetEditor : UnityEditor.Editor
     {
         [OnOpenAsset]
-        public static bool OnOpenAsset(int instanceId, int index)
+        public static bool OnOpenAsset(EntityId entityId, int index)
         {
-            Object asset = EditorUtility.InstanceIDToObject(instanceId);
+            Object asset = EditorUtility.EntityIdToObject(entityId);
             if (asset == null)
             {
                 return false;

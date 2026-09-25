@@ -8,6 +8,13 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Weapon", menuName = "Game/Weapon Definition")]
 public class WeaponDefinition : ScriptableObject
 {
+    [Header("Identity")]
+    [Tooltip("Prefab instantiated under the player's Weapons container when this is drawn.")]
+    public Weapon WeaponPrefab;
+
+    [Tooltip("Sprite shown in the HUD slot and on this weapon's world pickup.")]
+    public Sprite Icon;
+
     [Header("Firing")]
     public float FireRate = 6f; // shots per second
     public int AmmoCapacity = 12;

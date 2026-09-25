@@ -10,8 +10,10 @@ using UnityEngine.InputSystem;
 ///   1. Add to the weapon prefab (e.g. TestPistol), alongside its sprite.
 ///   2. Add an empty child named "Muzzle" at the barrel tip and assign it.
 ///   3. Assign a WeaponDefinition asset.
-///   4. Drag the Player root's PlayerAim into the Player Aim slot, and the
-///      "Attack" action (Player map) into the Fire Action slot.
+///   4. Drag the "Attack" action (Player map) into the Fire Action slot.
+///      Player Aim is wired at runtime by WeaponHolder, so leave it empty on
+///      the prefab.
+///   5. Reference this prefab from its WeaponDefinition's Weapon Prefab slot.
 /// </summary>
 public class Weapon : MonoBehaviour
 {
@@ -19,6 +21,9 @@ public class Weapon : MonoBehaviour
     [SerializeField] private Transform m_muzzle;
     [SerializeField] private PlayerAim m_playerAim;
     [SerializeField] private InputActionReference m_fireAction;
+
+    /// <summary>Which weapon this is, so WeaponHolder can tell one instance from another.</summary>
+    public WeaponDefinition Definition => m_definition;
 
     private float m_nextFireTime;
     private float m_currentBloom;
@@ -29,15 +34,24 @@ public class Weapon : MonoBehaviour
         m_currentAmmo = m_definition != null ? m_definition.AmmoCapacity : 0;
     }
 
+    /// <summary>
+    /// Points this instance at the player aiming it. Called by WeaponHolder the
+    /// moment the weapon is spawned, because a prefab cannot hold a reference to
+    /// a scene object.
+    /// </summary>
+    public void Initialize(PlayerAim playerAim)
+    {
+        m_playerAim = playerAim;
+    }
+
     private void OnEnable()
     {
         m_fireAction?.action.Enable();
     }
 
-    private void OnDisable()
-    {
-        m_fireAction?.action.Disable();
-    }
+    // Deliberately no OnDisable that disables the action. Every weapon instance
+    // points at the same shared Attack action, so a stowed weapon switching it
+    // off would disarm the one just drawn.
 
     private void Update()
     {

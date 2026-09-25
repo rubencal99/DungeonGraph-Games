@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df55947951bd24a2289f1f1d3bfd038d, type: 3}
   m_Name: Default_Pistol
   m_EditorClassIdentifier: 
+  WeaponPrefab: {fileID: 4544388895618666628, guid: 4401281c54274404cb7bddbcce9ff1a4, type: 3}
+  Icon: {fileID: 21300000, guid: 1616e4908b7c0284997f328329c92b1b, type: 3}
   FireRate: 3.5
   AmmoCapacity: 1200
   Accuracy: 4
@@ -24,3 +26,10 @@ MonoBehaviour:
   ProjectileSpeed: 30
   ProjectileSize: 1
   Damage: 10
+  Damping: 0
+  MinVelocity: 0
+  PenetrationCount: 0
+  PenetrableLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  ReboundCount: 0
