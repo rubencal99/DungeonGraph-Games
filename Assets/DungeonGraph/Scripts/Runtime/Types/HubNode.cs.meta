@@ -1,2 +1,9 @@
 fileFormatVersion: 2
 guid: 991f6c00d5fa94ba8b9df95e2bfb67d7
+AssetOrigin:
+  serializedVersion: 1
+  productId: 274559
+  packageName: DungeonGraph
+  packageVersion: 1.1.1
+  assetPath: Assets/DungeonGraph/Scripts/Runtime/Types/HubNode.cs
+  uploadId: 1004810

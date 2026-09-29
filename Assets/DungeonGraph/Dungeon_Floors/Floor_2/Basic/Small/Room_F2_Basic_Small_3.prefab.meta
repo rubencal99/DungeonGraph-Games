@@ -5,3 +5,10 @@ PrefabImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 274559
+  packageName: DungeonGraph
+  packageVersion: 1.1.1
+  assetPath: Assets/DungeonGraph/Dungeon_Floors/Floor_2/Basic/Small/Room_F2_Basic_Small_3.prefab
+  uploadId: 1004810

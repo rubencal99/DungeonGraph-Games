@@ -1110,10 +1110,59 @@ namespace DungeonGraph.Editor
             board.SetPosition(new Rect(pos.x, pos.y, newWidth, newHeight));
         }
 
+        /// <summary>
+        /// Loads every generation setting from the graph asset (see DungeonGenerationSettings), so
+        /// the runtime DungeonGenerator builds what this panel builds. Only UI state stays in
+        /// EditorPrefs. A graph the panel has never saved is seeded from the legacy EditorPrefs
+        /// values, so existing tuning carries over the first time each graph is opened.
+        /// </summary>
         private void LoadPreferences()
         {
-            m_generationStyle = (GenerationStyle)EditorPrefs.GetInt(PREF_GENERATION_STYLE, (int)GenerationStyle.Organic);
             m_showStyleAdvanced = EditorPrefs.GetBool(PREF_SHOW_STYLE_ADVANCED, false);
+            m_availableFloors = DungeonFloorManager.GetAllFloors();
+
+            var settings = m_dungeonGraph != null ? m_dungeonGraph.Settings : null;
+            if (settings == null || !settings.initialized)
+            {
+                LoadLegacyPreferences();
+                if (settings != null) SavePreferences();
+                return;
+            }
+
+            m_generationStyle = settings.style;
+
+            m_floodFillMaxCorridorLength = settings.floodFillMaxCorridorLength;
+            m_floodFillMaxBacktrackAttempts = settings.floodFillMaxBacktrackAttempts;
+            m_floodFillSeed = settings.floodFillSeed;
+
+            m_areaPlacementFactor = settings.areaPlacementFactor;
+            m_repulsionFactor = settings.repulsionFactor;
+            m_simulationIterations = settings.simulationIterations;
+            m_stiffnessFactor = settings.stiffnessFactor;
+            m_repulsionScalingMode = settings.repulsionScalingMode;
+            m_bendFactor = settings.bendFactor;
+            m_realTimeSimulation = settings.realTimeSimulation;
+            m_simulationSpeed = settings.simulationSpeed;
+            m_allowRoomOverlap = settings.allowRoomOverlap;
+
+            LoadStyleTuning();
+
+            m_corridorTile = settings.corridorTile;
+            m_corridorWidth = settings.corridorWidth;
+            m_corridorType = settings.corridorType;
+            m_maxCorridorRegenerations = settings.maxCorridorRegenerations;
+
+            m_selectedFloorIndex = Mathf.Max(0, m_availableFloors.FindIndex(f => f.floorName == settings.floorName));
+            UpdateCurrentFloorPath();
+        }
+
+        /// <summary>
+        /// Pre-DungeonGenerationSettings storage: one global set of values in EditorPrefs. Read
+        /// only to seed a graph that has never been saved by this panel.
+        /// </summary>
+        private void LoadLegacyPreferences()
+        {
+            m_generationStyle = (GenerationStyle)EditorPrefs.GetInt(PREF_GENERATION_STYLE, (int)GenerationStyle.Organic);
 
             m_floodFillMaxCorridorLength = EditorPrefs.GetInt(PREF_FLOODFILL_MAX_CORRIDOR_LENGTH, 40);
             m_floodFillMaxBacktrackAttempts = EditorPrefs.GetInt(PREF_FLOODFILL_MAX_BACKTRACK_ATTEMPTS, 6);
@@ -1146,7 +1195,6 @@ namespace DungeonGraph.Editor
             m_maxCorridorRegenerations = EditorPrefs.GetInt(PREF_MAX_CORRIDOR_REGENERATIONS, 3);
 
             // Load floor selection
-            m_availableFloors = DungeonFloorManager.GetAllFloors();
             string savedFloor = EditorPrefs.GetString(PREF_SELECTED_FLOOR, "");
             if (!string.IsNullOrEmpty(savedFloor) && m_availableFloors.Count > 0)
             {
@@ -1158,36 +1206,38 @@ namespace DungeonGraph.Editor
 
         private void SavePreferences()
         {
-            EditorPrefs.SetInt(PREF_GENERATION_STYLE, (int)m_generationStyle);
-
-            // Each style keeps its own keys so switching styles never loses tuning work
             EditorPrefs.SetBool(PREF_SHOW_STYLE_ADVANCED, m_showStyleAdvanced);
 
-            EditorPrefs.SetInt(PREF_FLOODFILL_MAX_CORRIDOR_LENGTH, m_floodFillMaxCorridorLength);
-            EditorPrefs.SetInt(PREF_FLOODFILL_MAX_BACKTRACK_ATTEMPTS, m_floodFillMaxBacktrackAttempts);
-            EditorPrefs.SetInt(PREF_FLOODFILL_SEED, m_floodFillSeed);
+            if (m_dungeonGraph == null) return;
 
-            EditorPrefs.SetFloat(PREF_AREA_PLACEMENT, m_areaPlacementFactor);
-            EditorPrefs.SetFloat(PREF_REPULSION, m_repulsionFactor);
-            EditorPrefs.SetInt(PREF_ITERATIONS, m_simulationIterations);
-            EditorPrefs.SetFloat(PREF_STIFFNESS, m_stiffnessFactor);
-            EditorPrefs.SetInt(PREF_REPULSION_SCALING, (int)m_repulsionScalingMode);
-            EditorPrefs.SetFloat(PREF_BEND_FACTOR, m_bendFactor);
-            EditorPrefs.SetBool(PREF_REALTIME_SIMULATION, m_realTimeSimulation);
-            EditorPrefs.SetFloat(PREF_SIMULATION_SPEED, m_simulationSpeed);
-            EditorPrefs.SetBool(PREF_ALLOW_ROOM_OVERLAP, m_allowRoomOverlap);
+            var settings = m_dungeonGraph.Settings;
+            settings.initialized = true;
+            settings.style = m_generationStyle;
 
+            settings.floodFillMaxCorridorLength = m_floodFillMaxCorridorLength;
+            settings.floodFillMaxBacktrackAttempts = m_floodFillMaxBacktrackAttempts;
+            settings.floodFillSeed = m_floodFillSeed;
+
+            settings.areaPlacementFactor = m_areaPlacementFactor;
+            settings.repulsionFactor = m_repulsionFactor;
+            settings.simulationIterations = m_simulationIterations;
+            settings.stiffnessFactor = m_stiffnessFactor;
+            settings.repulsionScalingMode = m_repulsionScalingMode;
+            settings.bendFactor = m_bendFactor;
+            settings.realTimeSimulation = m_realTimeSimulation;
+            settings.simulationSpeed = m_simulationSpeed;
+            settings.allowRoomOverlap = m_allowRoomOverlap;
+
+            settings.corridorTile = m_corridorTile;
+            settings.corridorWidth = m_corridorWidth;
+            settings.corridorType = m_corridorType;
+            settings.maxCorridorRegenerations = m_maxCorridorRegenerations;
+
+            bool hasFloor = m_selectedFloorIndex >= 0 && m_selectedFloorIndex < m_availableFloors.Count;
+            settings.floorName = hasFloor ? m_availableFloors[m_selectedFloorIndex].floorName : "";
+
+            // Also marks the asset dirty
             SaveStyleTuning();
-
-            // Save corridor tile as asset path
-            string tilePath = m_corridorTile != null ? AssetDatabase.GetAssetPath(m_corridorTile) : "";
-            EditorPrefs.SetString(PREF_CORRIDOR_TILE, tilePath);
-            EditorPrefs.SetInt(PREF_CORRIDOR_WIDTH, m_corridorWidth);
-            EditorPrefs.SetInt(PREF_CORRIDOR_TYPE, (int)m_corridorType);
-            EditorPrefs.SetInt(PREF_MAX_CORRIDOR_REGENERATIONS, m_maxCorridorRegenerations);
-
-            // Save floor selection
-            EditorPrefs.SetString(PREF_SELECTED_FLOOR, m_currentFloorPath);
         }
 
         /// <summary>
@@ -1306,6 +1356,7 @@ namespace DungeonGraph.Editor
             if (masterTilemap != null)
             {
                 masterTilemap.ClearAllTiles();
+                ClearWalls(masterTilemap);
             }
 
             // Work on a copy so the editor asset isn't mutated by runtime logic
@@ -1503,7 +1554,16 @@ namespace DungeonGraph.Editor
             if (masterTilemap != null)
             {
                 masterTilemap.ClearAllTiles();
+                ClearWalls(masterTilemap);
             }
+        }
+
+        /// <summary>Removes the wall collider along with the floor it surrounded.</summary>
+        private static void ClearWalls(UnityEngine.Tilemaps.Tilemap masterTilemap)
+        {
+            var marker = masterTilemap.GetComponent<DungeonMasterTilemap>();
+            if (marker != null)
+                marker.RebuildWalls();
         }
 
         // old function for directed ports

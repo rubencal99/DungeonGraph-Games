@@ -41,4 +41,11 @@ public class WeaponDefinition : ScriptableObject
     public int PenetrationCount = 0; // extra PenetrableLayers hits survived before disappearing
     public LayerMask PenetrableLayers;
     public int ReboundCount = 0; // times it can bounce off a solid (non-trigger) collider before disappearing
+
+    [Header("Audio")]
+    [Tooltip("Played once per trigger pull, however many projectiles the shot fires.")]
+    public AudioCueDefinition FireCue;
+
+    [Tooltip("Played when this weapon is picked up or swapped to.")]
+    public AudioCueDefinition EquipCue;
 }

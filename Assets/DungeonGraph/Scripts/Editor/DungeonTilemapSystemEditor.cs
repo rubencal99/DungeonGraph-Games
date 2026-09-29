@@ -28,10 +28,10 @@ namespace DungeonGraph.Editor
                     var roomInstances = new System.Collections.Generic.Dictionary<string, GameObject>();
                     var roomTemplates = FindObjectsByType<RoomTemplate>(FindObjectsSortMode.None);
 
-                    foreach (var template in roomTemplates)
+                    for (int i = 0; i < roomTemplates.Length; i++)
                     {
-                        // Use GameObject's instance ID as key since we don't have node IDs in this context
-                        roomInstances[template.gameObject.GetEntityId().ToString()] = template.gameObject;
+                        // Use the room's index as key since we don't have node IDs in this context
+                        roomInstances[i.ToString()] = roomTemplates[i].gameObject;
                     }
 
                     tilemapSystem.MergeRoomsToMasterTilemap(roomInstances);

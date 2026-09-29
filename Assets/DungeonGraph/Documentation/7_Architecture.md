@@ -159,11 +159,12 @@ DungeonGraphView
     → DungeonTilemapSystem      (snap, merge, corridors)
 ```
 
-**Runtime generation** reads the graph and floor label:
+**Runtime generation** reads the graph and the settings saved on it
+(`DungeonGraphAsset.Settings` — floor, style, corridors, tuning):
 
 ```
 DungeonGenerator.GenerateDungeon()
-  → OrganicGeneration                          (via Addressables delegates)
+  → OrganicGeneration | FloodFillGeneration    (via Addressables delegates)
     → the same tilemap pipeline
 ```
 

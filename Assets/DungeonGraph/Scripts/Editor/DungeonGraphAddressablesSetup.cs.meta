@@ -1,2 +1,9 @@
 fileFormatVersion: 2
 guid: 2df7dde117a9fc64bbba18c5f71a6ee6
+AssetOrigin:
+  serializedVersion: 1
+  productId: 274559
+  packageName: DungeonGraph
+  packageVersion: 1.1.1
+  assetPath: Assets/DungeonGraph/Scripts/Editor/DungeonGraphAddressablesSetup.cs
+  uploadId: 1004810

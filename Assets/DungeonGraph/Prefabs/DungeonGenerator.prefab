@@ -45,19 +45,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_dungeonGraph: {fileID: 11400000, guid: 94ec86b5a57237d4fb97f0183c7011f3, type: 2}
-  m_floorLabel: Floor_1
-  m_corridorTile: {fileID: 11400000, guid: 4ad7cb543eb6e4c579b4f1602c28fcd1, type: 2}
-  m_corridorWidth: 2
-  m_corridorType: 0
-  m_maxCorridorRegenerations: 3
-  m_areaPlacementFactor: 11
-  m_repulsionFactor: 30
-  m_stiffnessFactor: 20
-  m_idealDistance: 20
-  m_simulationIterations: 400
-  m_chaosFactor: 0
-  m_bendFactor: 0
-  m_repulsionScalingMode: 0
-  m_allowRoomOverlap: 0
-  m_maxRoomRegenerations: 4
   m_generateOnStart: 1

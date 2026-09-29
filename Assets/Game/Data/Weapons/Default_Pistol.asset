@@ -33,3 +33,5 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   ReboundCount: 0
+  FireCue: {fileID: 11400000, guid: 68f6c7f278414014ba8e39e8426f8249, type: 2}
+  EquipCue: {fileID: 11400000, guid: f26ff871eab475b4cb1661a7eacbbbbd, type: 2}

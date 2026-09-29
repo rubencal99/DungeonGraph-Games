@@ -1,2 +1,9 @@
 fileFormatVersion: 2
 guid: 6befb4b92ab384b71baacddb892356f0
+AssetOrigin:
+  serializedVersion: 1
+  productId: 274559
+  packageName: DungeonGraph
+  packageVersion: 1.1.1
+  assetPath: Assets/DungeonGraph/Scripts/Runtime/Types/BossNode.cs
+  uploadId: 1004810

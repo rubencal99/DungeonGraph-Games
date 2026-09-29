@@ -73,6 +73,7 @@ public class Chest : Interactable
         // a far worse bug than one that refuses a second open.
         m_isOpen = true;
         ApplyOpenVisual();
+        PlayActivateCue();
 
         SetPromptVisible(false);
         SpawnLoot();

@@ -41,6 +41,8 @@ Stores a graph. Create with `Assets > Create > Dungeon Graph > New Graph`.
 | --- | --- |
 | `nodes` | `List<DungeonGraphNode>`, `[SerializeReference]` so polymorphic subclasses survive serialization. |
 | `connections` | `List<DungeonGraphConnection>`. |
+| `Settings` | `DungeonGenerationSettings` — the Dungeon Tools panel settings saved with this graph (floor, style, corridors, style parameters). Read by `DungeonGenerator` at runtime. |
+| `GetTuning(style)` | `GenerationStyleTuning` — Ideal Distance, Chaos Factor, Force Mode and Max Room Regenerations for one style. |
 | `Init()` | Builds the internal GUID → node lookup. **Call before `GetNode` or `GetNodeFromOutput`.** The generation pipeline calls it automatically. |
 | `GetStartNode()` | Returns the first `StartNode`. Multiple Start nodes are undefined behaviour. |
 | `GetNode(string id)` | Node by GUID. |
@@ -245,10 +247,16 @@ are set from the Dungeon Tools panel or from `DungeonGenerator`.
 
 Marks the Tilemap that generated rooms and corridors are baked into. Put it on the
 same GameObject as the master `Tilemap`; `Master_Tilemap.prefab` already has it.
+It also builds the dungeon's wall collider on a generated, unsaved
+`Walls (Generated)` child — see [4.1 Collision](4_Runtime_API.md#collision).
+`[ExecuteAlways]`, so walls exist in Edit Mode as well as Play Mode.
 
 | Member | Description |
 | --- | --- |
 | `Tilemap` | The Tilemap on this GameObject. |
+| `WallTilemap` | The generated wall tilemap, or null before the first rebuild. |
+| `RebuildWalls()` | Regenerates the walls from the current floor and rebuilds the collider immediately. Called by the pipeline after merge, corridors and clear; call it after editing the master tilemap yourself. |
+| **Wall Thickness** (Inspector) | Cells of solid wall around the floor, 1–4. Default 2. |
 | `Find()` (static) | Returns the scene's master tilemap, or null. Checks for this component first, then falls back to a `"Dungeon"`-tagged object for scenes built against the older workflow. Never throws, whatever the project's tags look like. |
 | `FindMarker()` (static) | The marker component itself, including inactive objects. |
 
@@ -339,10 +347,13 @@ focus loss, focus gain and destroy, so a recompile cannot lose work.
 The main view. Draws nodes and edges, builds the Dungeon Tools and Node Settings
 panels, and dispatches generation to the selected style.
 
-Every generation parameter is persisted in `EditorPrefs` under the
-`DungeonGraph.*` prefix. Each style keeps its own keys, so switching styles does
-not lose tuning. `RebuildStyleParameters()` rebuilds the style-specific block on
-every style change.
+Every generation parameter is saved on the open graph asset —
+`DungeonGraphAsset.Settings` (`DungeonGenerationSettings`) plus the per-style
+`GetTuning(style)` values — so `DungeonGenerator` can read them at runtime and
+each graph keeps its own tuning. Only UI state stays in `EditorPrefs`. A graph
+the panel has never saved is seeded from the legacy `DungeonGraph.*`
+EditorPrefs values. `RebuildStyleParameters()` rebuilds the style-specific block
+on every style change.
 
 ### 5.7.3 `DungeonGraphEditorNode` : Node
 

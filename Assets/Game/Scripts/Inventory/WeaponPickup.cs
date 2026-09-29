@@ -77,6 +77,9 @@ public class WeaponPickup : Interactable
         if (inventory == null) return;
         if (!inventory.TryPickup(m_weapon)) return;
 
+        // The weapon's own equip sound is played by WeaponHolder; this is only
+        // the optional generic "grab" layered under it.
+        PlayActivateCue();
         Destroy(gameObject);
     }
 

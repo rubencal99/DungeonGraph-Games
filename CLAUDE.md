@@ -19,16 +19,19 @@ DungeonGraph Games is a multiplayer game hub, built in Unity 6.6, meant to host 
 - **DungeonGraph plugin installed and verified.** The Asset Store dungeon generator is imported, its required packages (Addressables, 2D Tilemap, Tilemap Extras, 2D Sprite) are installed, and Addressables is configured. A sample dungeon generates correctly from a node graph, confirming the toolchain works end to end.
 - **Base project scaffolding.** A Unity 6000.0.67f1 URP 2D project exists with the Input System package wired up, plus a minimal stub `PlayerController` (Rigidbody2D + WASD via an Input Action) as a starting point — not a finished controller.
 - **Character controller, spawning, and weapons.** `PlayerController` does WASD with acceleration/deceleration. `PlayerAim` raycasts the mouse onto an AimPlane layer each frame and publishes the aim point, angle, and side; `CharacterFlip` and `WeaponAimRotator` consume that to mirror the sprite and rotate the gun as independent concerns. Cinemachine is installed and follows the player through `AimCameraTarget`, which pulls the camera toward the cursor. `PlayerSpawner` drops the player at the DungeonGraph Start room once generation finishes. `WeaponDefinition` ScriptableObjects drive fire rate, ammo, bloom/recoil, spread, multi-shot, and projectile behavior; `Weapon` fires them and `ProjectilePoolManager` pools every `Projectile` by prefab.
+- **Inventory, interaction, chests, and loot.** A 3-slot weapon inventory shown bottom-right and cycled with the scroll wheel, an `Interactable` base class triggered by pressing E, a nearest-target prompt over interactable world objects, and chests that roll nested weighted loot tables onto the floor. Design notes are kept under Details below because later milestones build on them.
 
 ## Ongoing milestones
 
-1. **Inventory, interaction, chests, and loot.** A 3-slot rotating weapon inventory shown bottom-right and cycled with the scroll wheel, a generic `Activate`-style interaction triggered by pressing E, a distance-based prompt UI over interactable world objects, and chests that roll weighted loot tables onto the floor. **Currently in progress.**
-2. **Basic enemy and spawner.** Idle/Chase/Attack enemies driven by a simple state machine, spawned and pooled by an EnemySpawner, with performance as the top priority.
+1. **Basic enemy and spawner.** Idle/Chase/Attack enemies driven by a simple state machine, spawned and pooled by an EnemySpawner, with performance as the top priority.
+2. **Audio.** One pooled, budgeted sound system that stays cheap when dozens of cues fire at once. Starting cues: player running, dodging, and interacting; weapon shooting, reloading, and pickup/swap.
 3. **SceneManager, main menu, lobby, and basic multiplayer.** A join-code lobby for up to 4 players built on Netcode for GameObjects + Unity Relay/Lobby, with character skin, starting weapon, and (tentative) map-vote selection. **Deliberately deferred** — everything before it is built single-player first, then made networked.
+
+**Standing tasklist — Weapon polish.** Never "done". A running list of polish, extensions, and improvements to the weapon system, picked from between milestones. See Details.
 
 ## Details
 
-### 1. Inventory, interaction, chests, and loot
+### Inventory, interaction, chests, and loot (finished — reference notes)
 
 Built single-player. The reference implementation this was adapted from was a 3D Netcode project; the client/server splits, `NetworkBehaviour`s, and registry-id indirection were all stripped, and the 3D physics (arcing drops, holster anchors, billboarded prompts) became flat 2D equivalents.
 
@@ -43,12 +46,42 @@ Built single-player. The reference implementation this was adapted from was a 3D
 - **Chests:** `Chest` is an `Interactable` and nothing more — two overrides. It rolls its table on open, fans the results out, and swaps a closed sprite for an open one. An opened chest returns false from `CanInteract`, which is all it takes for the prompt to stop appearing.
 - **One spawn path:** every weapon that enters the world goes through `WeaponPickupSpawner.Spawn` — inventory trades and chest drops alike. That single seam is what makes adding a pool later a change to one file. Pickups are deliberately *not* pooled today: drops happen at human speed, unlike projectiles.
 
-### 2. Basic enemy + EnemySpawner
+### 1. Basic enemy + EnemySpawner
 
 - **Decision:** start with traditional GameObjects + object pooling + a simple state machine (Idle → Chase → Attack), not DOTS/ECS. Revisit ECS only if profiling later shows GameObject-based enemies are an actual bottleneck — no need to build for that possibility now.
 - **EnemyDefinition:** a ScriptableObject for stats (health, damage, speed, detection/attack range) so new enemy types don't require new code.
 - **EnemySpawner:** spawns pooled enemy instances rather than instantiating/destroying them; keep an eye on active enemy counts and avoid expensive per-enemy work (e.g. prefer cheap distance checks over physics raycasts where possible) since this milestone is explicitly performance-first.
-- **Loot on death:** reuse `LootTableDefinition` and `WeaponPickupSpawner` from milestone 1 rather than growing a second drop path.
+- **Loot on death:** reuse `LootTableDefinition` and `WeaponPickupSpawner` from the inventory/loot milestone rather than growing a second drop path.
+
+### 2. Audio
+
+The problem to solve is volume of sound, not variety. Four players on full-auto in a bullet-hell room can ask for hundreds of shots a second. Playing every one is expensive, and it sounds like mush anyway. The system decides which sounds are worth a voice.
+
+**Status: code written; editor setup (mixer, prefab, cue assets) is done by hand.** Scripts live in `Scripts/Audio/`.
+
+- **AudioCueDefinition:** a ScriptableObject per sound (`Assets > Create > Game > Audio Cue`): clip variations (random pick, optionally never the same twice in a row), and **Volume, Pitch, and Delay ranges rolled fresh every play** so repeats never sound identical. Also mixer group, spatial on/off with a distance range, priority (0–100), a **max instances** cap, and a **minimum interval**. The last two are what keep a minigun from stacking forty copies of one gunshot. Ranges draw as two-handled sliders through the `[MinMaxRange]` attribute (`Scripts/Editor/MinMaxRangeDrawer.cs`) — Unity has no built-in one.
+- **One player, one pool:** `AudioManager` (a prefab dropped into each scene, like `ProjectilePoolManager`) builds a fixed set of `AudioSource` voices in `Awake` and exposes static `AudioManager.Play(cue, position)`. A null cue is silent, not an error, so unassigned slots are safe. No `Instantiate`, no `PlayClipAtPoint`, no allocation per play. Voice Count lives on the prefab and should match Project Settings > Audio > Max Real Voices (32 by default). Voices are tracked by clock (start + delay + length/pitch), not `AudioSource.isPlaying`, which is unreliable during a delayed start.
+- **When the pool is full:** if a cue is at its own cap, its oldest copy restarts. Otherwise a free voice. Otherwise the lowest-priority, oldest voice is taken — unless everything playing matters more, in which case the new sound is dropped.
+- **No loops yet.** Every current sound is a one-shot (footsteps included), so there are no play handles. Add a handle the day something genuinely loops (a minigun spin-up, ambience).
+- **Mixer:** an `AudioMixer` built by hand — Master → Music, SFX → Player / Weapons / World, UI — with exposed volume parameters, so a settings menu later is a slider per parameter.
+- **2D listener:** the camera sits at z = -10, so a listener on it hears everything 10 units too far away. The `AudioListener` lives on a child of Main Camera at local z = +10, which puts it on the gameplay plane and follows the camera with no code.
+- **Hooks:**
+  - *Shoot* — `WeaponDefinition.FireCue`, played by `Weapon.Fire` once per trigger pull, not per projectile.
+  - *Pick up / swap* — one `WeaponDefinition.EquipCue`, played by `WeaponHolder` when a weapon comes into hand or into the pack. `WeaponHolder` already reacts to every inventory change, so one pickup can never play it twice.
+  - *Interact* — optional `Activate Cue` on the `Interactable` base, played through `PlayActivateCue()` only after a subclass's `Activate` actually succeeds. The sound belongs to what you touched (chest creak vs. lever clunk), so it lives on the object, not on the player.
+  - *Running* — `PlayerFootsteps`, a separate component that plays a step per stride of distance covered, so steps quicken and stop with the player.
+  - *Reload and dodge* — **neither mechanic exists yet**, so there are no cue slots for them. Each is one cue field plus one `AudioManager.Play` line when the feature lands.
+- **Multiplayer later:** audio stays client-local and is never networked itself. Each client plays sounds off the replicated events it already receives (a shot, a pickup), which is why hooks sit on gameplay events rather than on input.
+
+### Weapon polish (standing tasklist)
+
+Not a milestone to finish. Add items as they come up; tick them off as they ship.
+
+- [ ] **Audio** — shoot, reload, pickup/swap cues (built by the Audio milestone; this list tracks per-weapon tuning and new cues after it).
+- [ ] **Muzzle flash** — a short sprite or light flash at the barrel on each shot.
+- [ ] **Particles** — impact sparks where projectiles hit, shell casings, pooled like projectiles.
+- [ ] **Reloading** — the mechanic itself (magazine vs. reserve ammo, reload time from `WeaponDefinition`, reload key), plus a HUD indicator.
+- [ ] **Animations** — recoil kick, reload, and equip/swap animations, authored in the editor.
 
 ### 3. SceneManager, main menu, lobby, multiplayer
 

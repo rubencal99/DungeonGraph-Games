@@ -1,2 +1,9 @@
 fileFormatVersion: 2
 guid: cbc4840a75ded9a4b8daceeab8cd1832
+AssetOrigin:
+  serializedVersion: 1
+  productId: 274559
+  packageName: DungeonGraph
+  packageVersion: 1.1.1
+  assetPath: Assets/DungeonGraph/Scripts/Runtime/OrganicGeneration.cs
+  uploadId: 1004810

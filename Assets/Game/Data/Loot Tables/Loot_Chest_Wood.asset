@@ -16,5 +16,3 @@ MonoBehaviour:
   m_Tables:
   - key: {fileID: 11400000, guid: 6ab34f6a71d88074e80effe4d6d8e96c, type: 2}
     value: 20
-  - key: {fileID: 11400000, guid: 650fb363ddae242409d64ec1b8fb795d, type: 2}
-    value: 4

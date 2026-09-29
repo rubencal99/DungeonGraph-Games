@@ -6,3 +6,10 @@ NativeFormatImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 274559
+  packageName: DungeonGraph
+  packageVersion: 
+  assetPath: Assets/DungeonGraph/Tiles/BasicFloorRuleTile_2.asset
+  uploadId: 0

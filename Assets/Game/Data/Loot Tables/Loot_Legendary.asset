@@ -13,8 +13,6 @@ MonoBehaviour:
   m_Name: Loot_Legendary
   m_EditorClassIdentifier: Roguelite.Runtime::Roguelite.Loot.LootTableDefinition
   m_Items:
-  - key: {fileID: 11400000, guid: 6dd52fd95766a4d0986bdca5d9c19a86, type: 2}
-    value: 10
   - key: {fileID: 11400000, guid: 0486e3c50cb024c3fab54c238921bd31, type: 2}
     value: 20
   m_Tables: []

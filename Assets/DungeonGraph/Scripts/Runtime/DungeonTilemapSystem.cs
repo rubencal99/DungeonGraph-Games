@@ -139,6 +139,8 @@ namespace DungeonGraph
                 }
             }
 
+            RebuildWalls();
+
             //Debug.Log($"[DungeonTilemapSystem] Merged {totalTilesCopied} tiles from {roomInstances.Count} rooms to master tilemap");
         }
 
@@ -257,7 +259,22 @@ namespace DungeonGraph
             // Clear the tracking set
             corridorTilePositions.Clear();
 
+            RebuildWalls();
+
             //Debug.Log("[DungeonTilemapSystem] Cleared all corridor tiles");
+        }
+
+        /// <summary>
+        /// Regenerates the wall collider around the master tilemap's current floor. See
+        /// <see cref="DungeonMasterTilemap.RebuildWalls"/>.
+        /// </summary>
+        public void RebuildWalls()
+        {
+            if (masterTilemap == null) return;
+
+            var marker = masterTilemap.GetComponent<DungeonMasterTilemap>();
+            if (marker != null)
+                marker.RebuildWalls();
         }
 
         /// <summary>
@@ -519,6 +536,9 @@ namespace DungeonGraph
 
             if (unresolvedCount > 0)
                 Debug.LogWarning($"[DungeonTilemapSystem] {unresolvedCount} of {corridorCount} corridor(s) could not fully avoid overlapping a room.");
+
+            // Corridors open new floor through what were wall cells.
+            RebuildWalls();
         }
 
         /// <summary>

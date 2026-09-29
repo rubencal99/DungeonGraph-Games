@@ -38,11 +38,8 @@ namespace DungeonGraph.Editor
                 Grid gridComponent = grid.AddComponent<Grid>();
                 gridComponent.cellSize = new Vector3(1, 1, 0);
 
-                Rigidbody2D rb = grid.AddComponent<Rigidbody2D>();
-                rb.bodyType = RigidbodyType2D.Static;
-
-                CompositeCollider2D compositeCollider = grid.AddComponent<CompositeCollider2D>();
-                compositeCollider.geometryType = CompositeCollider2D.GeometryType.Polygons;
+                // No colliders on rooms: collision is generated once, on the master tilemap,
+                // after every room and corridor has been merged into it.
 
                 // Create Exits child
                 GameObject exits = new GameObject("Exits");
@@ -55,10 +52,6 @@ namespace DungeonGraph.Editor
                 Tilemap tilemap = tilemapFloor.AddComponent<Tilemap>();
                 TilemapRenderer tilemapRenderer = tilemapFloor.AddComponent<TilemapRenderer>();
                 tilemapRenderer.sortingOrder = 0;
-
-                // Optionally add TilemapCollider2D for collision (common in dungeon rooms)
-                TilemapCollider2D tilemapCollider = tilemapFloor.AddComponent<TilemapCollider2D>();
-                tilemapCollider.compositeOperation = Collider2D.CompositeOperation.Merge;
             }
 
             // Get the active folder path in the Project window

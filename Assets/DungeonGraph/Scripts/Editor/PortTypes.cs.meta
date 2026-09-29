@@ -1,2 +1,9 @@
 fileFormatVersion: 2
 guid: 7528803e98eafd14e8aea26032b694ec
+AssetOrigin:
+  serializedVersion: 1
+  productId: 274559
+  packageName: DungeonGraph
+  packageVersion: 1.1.1
+  assetPath: Assets/DungeonGraph/Scripts/Editor/PortTypes.cs
+  uploadId: 1004810

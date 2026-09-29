@@ -1,2 +1,9 @@
 fileFormatVersion: 2
 guid: 38ff4ffe0071c7f4d86fab1aa371c1ed
+AssetOrigin:
+  serializedVersion: 1
+  productId: 274559
+  packageName: DungeonGraph
+  packageVersion: 1.1.1
+  assetPath: Assets/DungeonGraph/Scripts/Editor/CreateCustomNodeTypeWindow.cs
+  uploadId: 1004810

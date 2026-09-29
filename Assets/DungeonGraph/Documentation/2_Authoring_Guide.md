@@ -148,7 +148,7 @@ subfolder, a subfolder for each custom type, a blank placeholder room in each,
 and registers all of them with Addressables under a label matching the floor name.
 
 **To use a floor:** pick it from the **Floor** dropdown before generating. At
-runtime, set the **Floor Label** field on the DungeonGenerator component instead.
+runtime, the DungeonGenerator uses the floor saved on the graph, so pick it here.
 
 Graphs and floors are independent. Any graph can be generated against any floor —
 the graph describes structure, the floor supplies the rooms. The sample graphs
@@ -192,6 +192,9 @@ Guidelines:
   will shift the room off its doorways.
 - **Multiple tilemaps are fine.** Add more Tilemap children under the Grid for
   walls, decoration or a background layer. All of them are merged.
+- **Do not add colliders to rooms.** Collision is generated once, on the master
+  tilemap, after rooms and corridors are merged — so doorways stay open. See
+  [4.1 Collision](4_Runtime_API.md#collision).
 
 ### Step 3 — Add exits
 
@@ -295,6 +298,10 @@ colours. They exist so the samples render; replace them with your own art.
    crisp pixel art.
 6. Create tiles from the sprites: select them and use
    `Assets > Create > 2D > Tiles > Rule Tile` (or drag them into a Tile Palette).
+   The tile's **Collider Type** does not matter. Collision is generated from
+   which cells are painted: the outermost ring of painted cells, and everything
+   beyond it, is solid. Draw your wall art on that outer ring, which is what the
+   bundled rule tiles do.
 7. Paint your rooms with the new tiles, then **Save** each room (§2.9) so its
    bounds are recomputed.
 8. Set **Corridor Tile** in the Dungeon Tools panel to your new tile.

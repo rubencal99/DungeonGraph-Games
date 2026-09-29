@@ -49,14 +49,12 @@ MonoBehaviour:
   m_prompt: {fileID: 11400000, guid: 934fa71aa079cf24eb9a29f3afc16834, type: 2}
   m_promptView: {fileID: 302714962772225994}
   m_range: 5
+  m_activateCue: {fileID: 11400000, guid: 00cf62e05b371d146b62ac1d1cbefd3e, type: 2}
   m_lootTable: {fileID: 11400000, guid: 7d0780981edfaf84ab58f1027f944012, type: 2}
   m_lootSocket: {fileID: 0}
   m_dropCount: {x: 1, y: 1}
   m_fanDegrees: 42
-  m_spriteRenderer: {fileID: 110123357365172897}
   m_animator: {fileID: 1165746406536620535}
-  m_closedSprite: {fileID: 0}
-  m_openSprite: {fileID: 0}
 --- !u!1001 &3315064222151936872
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -118,11 +116,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9aef2e2ff95e6784684ee7017fe75c00, type: 3}
---- !u!212 &110123357365172897 stripped
-SpriteRenderer:
-  m_CorrespondingSourceObject: {fileID: 3424501277827035593, guid: 9aef2e2ff95e6784684ee7017fe75c00, type: 3}
-  m_PrefabInstance: {fileID: 3315064222151936872}
-  m_PrefabAsset: {fileID: 0}
 --- !u!95 &1165746406536620535 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 4480212425348784799, guid: 9aef2e2ff95e6784684ee7017fe75c00, type: 3}

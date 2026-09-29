@@ -28,6 +28,9 @@ public abstract class Interactable : MonoBehaviour
     [SerializeField] private InteractionPromptView m_promptView;
     [SerializeField] private float m_range = 2.5f;
 
+    [Tooltip("Played when this is successfully used — a chest creak, a lever clunk. Optional.")]
+    [SerializeField] private AudioCueDefinition m_activateCue;
+
     public float RangeSquared => m_range * m_range;
     public float Range => m_range;
     public InteractionPromptDefinition Prompt => m_prompt;
@@ -52,6 +55,15 @@ public abstract class Interactable : MonoBehaviour
 
     /// <summary>Does the thing. Called once per E press, after range and CanInteract pass.</summary>
     public abstract void Activate(GameObject interactor);
+
+    /// <summary>
+    /// Subclasses call this once Activate has actually done something, so a
+    /// refused interaction stays silent.
+    /// </summary>
+    protected void PlayActivateCue()
+    {
+        AudioManager.Play(m_activateCue, transform.position);
+    }
 
     /// <summary>Shows or hides this object's floating prompt.</summary>
     public virtual void SetPromptVisible(bool visible)

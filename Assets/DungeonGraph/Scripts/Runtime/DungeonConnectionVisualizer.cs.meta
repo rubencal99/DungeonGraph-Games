@@ -1,2 +1,9 @@
 fileFormatVersion: 2
 guid: 1af907e29bbf03d45a2ce16e6ab9f328
+AssetOrigin:
+  serializedVersion: 1
+  productId: 274559
+  packageName: DungeonGraph
+  packageVersion: 1.1.1
+  assetPath: Assets/DungeonGraph/Scripts/Runtime/DungeonConnectionVisualizer.cs
+  uploadId: 1004810

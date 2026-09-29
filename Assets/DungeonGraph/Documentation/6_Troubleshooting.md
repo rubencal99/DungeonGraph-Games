@@ -210,6 +210,34 @@ The scene contains a dungeon baked in the Editor *and* a `DungeonGenerator` with
 **Fix:** click **Clear** in the Dungeon Tools panel before entering Play Mode, or
 untick **Generate On Start**.
 
+### The player is pushed out of the dungeon, or cannot move on the floor
+
+Something is making the floor itself solid — usually a collider left over from
+an earlier setup.
+
+**Fix:** remove any Rigidbody 2D, Tilemap Collider 2D or Composite Collider 2D
+from your room prefabs **and from the master tilemap object itself**. Only its
+generated **Walls (Generated)** child should carry colliders. See
+[4.1 Collision](4_Runtime_API.md#collision).
+
+### Nothing stops the player at the dungeon's edge
+
+The walls were not built. Check that the master tilemap has the **Dungeon Master
+Tilemap** component (the legacy `"Dungeon"` tag alone does not build walls) and
+that a **Walls (Generated)** child appears under it after generating.
+
+### Objects pass through walls
+
+Set **Collision Detection** to `Continuous` on the moving Rigidbody 2D. That is
+the guarantee. With `Discrete`, a body that moves more than about half the wall
+thickness in one physics step can pass through — raise **Wall Thickness** on the
+Dungeon Master Tilemap component to widen that margin.
+
+Also check where the object starts. A body spawned inside a wall is pushed out
+of it, possibly on the outside; a body spawned outside the dungeon lands on top
+of the walls rather than inside. Spawn on floor cells — for example the
+positions returned by `DungeonGenerationResult`.
+
 ### Generation blocks the first frame
 
 Addressables loading is asynchronous but room instantiation is not. On large
@@ -227,6 +255,9 @@ Work top to bottom. Most problems are resolved by the first four.
       (`Tools > Dungeon Graph > Setup > Check Dependencies`).
 - [ ] The scene has a master tilemap
       (`Master_Tilemap.prefab`, or a Tilemap with **Dungeon Master Tilemap**).
+- [ ] For collision: a **Walls (Generated)** child exists under the master
+      tilemap, room prefabs carry no colliders, and moving bodies use
+      `Continuous` collision detection.
 - [ ] **Corridor Tile** is assigned.
 - [ ] The graph has exactly one Start node.
 - [ ] A floor is selected, and that floor's folders contain room prefabs.

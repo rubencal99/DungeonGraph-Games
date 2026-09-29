@@ -82,6 +82,9 @@ public class Weapon : MonoBehaviour
         }
 
         m_currentBloom = Mathf.Min(m_definition.MaxBloomAngle, m_currentBloom + m_definition.RecoilBloomPerShot);
+
+        // Once per shot, not per projectile, so a shotgun is not eight times louder.
+        AudioManager.Play(m_definition.FireCue, m_muzzle.position);
     }
 
     private void SpawnProjectile(float fanAngle)

@@ -1,2 +1,9 @@
 fileFormatVersion: 2
 guid: a035f6396ec4e43429f09ab6db9ef8cb
+AssetOrigin:
+  serializedVersion: 1
+  productId: 274559
+  packageName: DungeonGraph
+  packageVersion: 1.1.1
+  assetPath: Assets/DungeonGraph/Scripts/Editor/DungeonGraphAssetEditor.cs
+  uploadId: 1004810

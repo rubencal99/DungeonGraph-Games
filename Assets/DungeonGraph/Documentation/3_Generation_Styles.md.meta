@@ -2,6 +2,13 @@ fileFormatVersion: 2
 guid: e0fe33b364ff0efd50d5a27650b7a31b
 TextScriptImporter:
   externalObjects: {}
-  userData:
-  assetBundleName:
-  assetBundlePath:
+  userData: 
+  assetBundleName: 
+  assetBundlePath: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 274559
+  packageName: DungeonGraph
+  packageVersion: 1.1.1
+  assetPath: Assets/DungeonGraph/Documentation/3_Generation_Styles.md
+  uploadId: 1004810

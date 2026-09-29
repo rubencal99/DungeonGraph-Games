@@ -6,3 +6,10 @@ NativeFormatImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 274559
+  packageName: DungeonGraph
+  packageVersion: 1.1.1
+  assetPath: Assets/DungeonGraph/Dungeon_Graphs/Starter_Floors/Floor_3/02 - LoopSeriesExitThroughGiftShop.asset
+  uploadId: 1004810

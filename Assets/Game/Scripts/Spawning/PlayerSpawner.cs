@@ -69,7 +69,7 @@ public class PlayerSpawner : MonoBehaviour
         // gameplay plane) — its X/Y follows the spawn point so its fixed size
         // still covers the area around the player regardless of where the
         // Start room landed in this run's layout.
-        if (m_aimPlane != null) Instantiate(m_aimPlane, new Vector3(spawnPoint.x, spawnPoint.y, 0f), new Quaternion(90f, 0f, 0f, 0f));
+        //if (m_aimPlane != null) Instantiate(m_aimPlane, new Vector3(spawnPoint.x, spawnPoint.y, 0f), new Quaternion(90f, 0f, 0f, 0f));
 
         if (m_player == null) return;
         GameObject playerInstance = Instantiate(m_player, spawnPoint, Quaternion.identity);

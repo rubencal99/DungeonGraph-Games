@@ -1,2 +1,9 @@
 fileFormatVersion: 2
 guid: bb45641387d678f42a1831f078a6da53
+AssetOrigin:
+  serializedVersion: 1
+  productId: 274559
+  packageName: DungeonGraph
+  packageVersion: 1.1.1
+  assetPath: Assets/DungeonGraph/Scripts/Runtime/RoomTemplate.cs
+  uploadId: 1004810

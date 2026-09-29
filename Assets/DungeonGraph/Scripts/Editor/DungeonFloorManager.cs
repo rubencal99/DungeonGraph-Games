@@ -260,11 +260,7 @@ namespace DungeonGraph.Editor
                 Grid gridComponent = grid.AddComponent<Grid>();
                 gridComponent.cellSize = new Vector3(1, 1, 0);
 
-                Rigidbody2D rb = grid.AddComponent<Rigidbody2D>();
-                rb.bodyType = RigidbodyType2D.Static;
-
-                CompositeCollider2D compositeCollider = grid.AddComponent<CompositeCollider2D>();
-                compositeCollider.geometryType = CompositeCollider2D.GeometryType.Polygons;
+                // No colliders on rooms: collision lives on the master tilemap.
 
                 GameObject exits = new GameObject("Exits");
                 exits.transform.SetParent(room.transform);
@@ -275,9 +271,6 @@ namespace DungeonGraph.Editor
                 UnityEngine.Tilemaps.Tilemap tilemap = tilemapFloor.AddComponent<UnityEngine.Tilemaps.Tilemap>();
                 UnityEngine.Tilemaps.TilemapRenderer tilemapRenderer = tilemapFloor.AddComponent<UnityEngine.Tilemaps.TilemapRenderer>();
                 tilemapRenderer.sortingOrder = 0;
-
-                UnityEngine.Tilemaps.TilemapCollider2D tilemapCollider = tilemapFloor.AddComponent<UnityEngine.Tilemaps.TilemapCollider2D>();
-                tilemapCollider.compositeOperation = Collider2D.CompositeOperation.Merge;
             }
 
             string uniquePath = AssetDatabase.GenerateUniqueAssetPath($"{folderPath}/Room.prefab");

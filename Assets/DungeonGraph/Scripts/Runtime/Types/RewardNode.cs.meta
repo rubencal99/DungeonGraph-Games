@@ -1,2 +1,9 @@
 fileFormatVersion: 2
 guid: e5ccb2a2a3406b5488cd87f1a8ba0239
+AssetOrigin:
+  serializedVersion: 1
+  productId: 274559
+  packageName: DungeonGraph
+  packageVersion: 1.1.1
+  assetPath: Assets/DungeonGraph/Scripts/Runtime/Types/RewardNode.cs
+  uploadId: 1004810

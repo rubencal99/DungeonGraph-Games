@@ -1,2 +1,9 @@
 fileFormatVersion: 2
 guid: a00ea3c1c5954554b8b03f2debc20c29
+AssetOrigin:
+  serializedVersion: 1
+  productId: 274559
+  packageName: DungeonGraph
+  packageVersion: 1.1.1
+  assetPath: Assets/DungeonGraph/Scripts/Runtime/RoomNodeReference.cs
+  uploadId: 1004810

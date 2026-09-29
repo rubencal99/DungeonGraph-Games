@@ -1,2 +1,9 @@
 fileFormatVersion: 2
 guid: 3ce6d487ae8edf549814959f9f6f5547
+AssetOrigin:
+  serializedVersion: 1
+  productId: 274559
+  packageName: DungeonGraph
+  packageVersion: 1.1.1
+  assetPath: Assets/DungeonGraph/Scripts/Runtime/CustomNodeType.cs
+  uploadId: 1004810

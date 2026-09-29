@@ -1,2 +1,9 @@
 fileFormatVersion: 2
 guid: 4d0ef700ff924453c81d2b26107ea527
+AssetOrigin:
+  serializedVersion: 1
+  productId: 274559
+  packageName: DungeonGraph
+  packageVersion: 1.1.1
+  assetPath: Assets/DungeonGraph/Scripts/Editor/RoomAuthoringTool.cs
+  uploadId: 1004810

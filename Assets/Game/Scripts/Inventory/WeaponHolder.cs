@@ -27,27 +27,43 @@ public class WeaponHolder : MonoBehaviour
 
     // One instance per slot, parallel to the inventory's slots.
     private Weapon[] m_instances;
+    private Weapon m_held;
 
     private void OnEnable()
     {
         if (m_inventory == null) return;
-        m_inventory.Changed += Refresh;
+        m_inventory.Changed += OnInventoryChanged;
+
+        // Silent: this is catching up with the inventory, not the player doing anything.
         Refresh();
     }
 
     private void OnDisable()
     {
-        if (m_inventory != null) m_inventory.Changed -= Refresh;
+        if (m_inventory != null) m_inventory.Changed -= OnInventoryChanged;
+    }
+
+    /// <summary>
+    /// Every pickup, trade, and scroll arrives here, which makes this the one
+    /// place the equip sound can play without ever playing twice for one action.
+    /// </summary>
+    private void OnInventoryChanged()
+    {
+        WeaponDefinition arrived = Refresh();
+        if (arrived != null) AudioManager.Play(arrived.EquipCue, transform.position);
     }
 
     /// <summary>
     /// Brings the instantiated weapons back in line with the inventory: build
     /// what is newly held, tear down what was traded away, show only the slot in
-    /// hand.
+    /// hand. Returns the weapon that just came into hand or into the pack, or
+    /// null when nothing new arrived.
     /// </summary>
-    private void Refresh()
+    private WeaponDefinition Refresh()
     {
-        if (m_weaponParent == null) return;
+        if (m_weaponParent == null) return null;
+
+        WeaponDefinition arrived = null;
 
         if (m_instances == null || m_instances.Length != m_inventory.SlotCount)
         {
@@ -70,6 +86,7 @@ public class WeaponHolder : MonoBehaviour
             if (definition != null && m_instances[i] == null)
             {
                 m_instances[i] = CreateInstance(definition);
+                arrived = definition;
             }
 
             if (m_instances[i] != null)
@@ -77,6 +94,14 @@ public class WeaponHolder : MonoBehaviour
                 m_instances[i].gameObject.SetActive(i == m_inventory.HeldSlot);
             }
         }
+
+        // What is now in hand wins over something slipped into the pack.
+        int held = m_inventory.HeldSlot;
+        Weapon previousHeld = m_held;
+        m_held = held >= 0 && held < m_instances.Length ? m_instances[held] : null;
+        if (m_held != null && m_held != previousHeld) arrived = m_held.Definition;
+
+        return arrived;
     }
 
     private Weapon CreateInstance(WeaponDefinition definition)

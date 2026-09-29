@@ -2,6 +2,13 @@ fileFormatVersion: 2
 guid: 41822943cadb7ddd96b0daf5abe43ea1
 TextScriptImporter:
   externalObjects: {}
-  userData:
-  assetBundleName:
-  assetBundlePath:
+  userData: 
+  assetBundleName: 
+  assetBundlePath: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 274559
+  packageName: DungeonGraph
+  packageVersion: 1.1.1
+  assetPath: Assets/DungeonGraph/README.txt
+  uploadId: 1004810

@@ -6,16 +6,19 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
-using UnityEngine.Tilemaps;
 
 namespace DungeonGraph
 {
     /// <summary>
-    /// Drop into a scene and assign a DungeonGraphAsset plus a floor label to generate
-    /// a dungeon at runtime using Addressables.
+    /// Drop into a scene and assign a DungeonGraphAsset to generate a dungeon at runtime using
+    /// Addressables.
+    ///
+    /// Every generation setting — floor, style, corridors, tuning — comes from the graph's own
+    /// saved Dungeon Tools settings (<see cref="DungeonGraphAsset.Settings"/>), so the runtime
+    /// dungeon matches what the graph editor generates. Tune in the Dungeon Tools panel.
     ///
     /// Room prefabs must be marked Addressable with two labels:
-    ///   1. Floor label   -- matches m_floorLabel (e.g. "Floor_1")
+    ///   1. Floor label   -- the graph's selected floor (e.g. "Floor_1")
     ///   2. Room type label -- one of: Start, End, Hub, Boss, Reward, Basic_Small,
     ///                        Basic_Medium, Basic_Large, or a custom type name
     ///
@@ -25,31 +28,8 @@ namespace DungeonGraph
     public class DungeonGenerator : MonoBehaviour
     {
         [Header("Graph")]
+        [Tooltip("The graph to build. Floor, style and all tuning come from its Dungeon Tools settings.")]
         [SerializeField] private DungeonGraphAsset m_dungeonGraph;
-
-        [Header("Floor")]
-        [Tooltip("Addressable label assigned to all prefabs for this floor (e.g. 'Floor_1').")]
-        [SerializeField] private string m_floorLabel = "Floor_1";
-
-        [Header("Corridors")]
-        [SerializeField] private TileBase m_corridorTile;
-        [SerializeField] private int m_corridorWidth = 2;
-        [SerializeField] private CorridorType m_corridorType = CorridorType.Direct;
-        [SerializeField] private int m_maxCorridorRegenerations = 3;
-
-        [Header("Physics Simulation")]
-        [SerializeField] private float m_areaPlacementFactor  = 11.0f;
-        [SerializeField] private float m_repulsionFactor      = 30.0f;
-        [SerializeField] private float m_stiffnessFactor      = 20.0f;
-        [SerializeField] private float m_idealDistance        = 20f;
-        [SerializeField] private int   m_simulationIterations = 400;
-        [SerializeField] private float m_chaosFactor          = 0f;
-        [SerializeField] private float m_bendFactor           = 0f;
-        [SerializeField] private RepulsionScalingMode m_repulsionScalingMode = RepulsionScalingMode.Default;
-
-        [Header("Overlap Prevention")]
-        [SerializeField] private bool m_allowRoomOverlap     = false;
-        [SerializeField] private int  m_maxRoomRegenerations = 4;
 
         [Header("Startup")]
         [Tooltip("Automatically generate on Start. Disable to call Generate() manually.")]
@@ -125,6 +105,9 @@ namespace DungeonGraph
         // Internal
         // -------------------------------------------------------------------------
 
+        /// <summary>Floor label of the run in progress (the graph's saved floor), captured at the start of each run.</summary>
+        private string m_floorLabel;
+
         private readonly Dictionary<string, IList<GameObject>> m_prefabCache = new Dictionary<string, IList<GameObject>>();
         private readonly List<AsyncOperationHandle> m_handles = new List<AsyncOperationHandle>();
 
@@ -170,6 +153,9 @@ namespace DungeonGraph
                 return null;
             }
 
+            var settings = m_dungeonGraph.Settings;
+            m_floorLabel = settings.floorName;
+
             // Confirm the floor label resolves to something BEFORE tearing anything down.
             // Without this check a misconfigured Addressables setup destroys the existing
             // dungeon and clears the master tilemap, then fails to load a replacement —
@@ -188,39 +174,65 @@ namespace DungeonGraph
             var graph = ScriptableObject.Instantiate(m_dungeonGraph);
             graph.Init();
 
-            await OrganicGeneration.GenerateRooms(
-                graph,
-                CreateRoomFactory(),
-                CreateBoundsProvider(),
-                parent:                   null,
-                areaPlacementFactor:      m_areaPlacementFactor,
-                repulsionFactor:          m_repulsionFactor,
-                simulationIterations:     m_simulationIterations,
-                forceMode:                false,
-                stiffnessFactor:          m_stiffnessFactor,
-                chaosFactor:              m_chaosFactor,
-                realTimeSimulation:       false,
-                simulationSpeed:          30f,
-                idealDistance:            m_idealDistance,
-                allowRoomOverlap:         m_allowRoomOverlap,
-                maxRoomRegenerations:     m_maxRoomRegenerations,
-                maxCorridorRegenerations: m_maxCorridorRegenerations,
-                repulsionScalingMode:     m_repulsionScalingMode,
-                bendFactor:               m_bendFactor,
-                generateCorridorsAfterSimulation: false);
+            var tuning         = m_dungeonGraph.GetTuning(settings.style);
+            var roomFactory    = CreateRoomFactory();
+            var boundsProvider = CreateBoundsProvider();
+
+            if (settings.style == GenerationStyle.FloodFill)
+            {
+                await FloodFillGeneration.GenerateRooms(
+                    graph,
+                    (node, parent) => roomFactory(node, parent),
+                    node => boundsProvider(node),
+                    parent:                   null,
+                    idealDistance:            tuning.idealDistance,
+                    maxCorridorLength:        settings.floodFillMaxCorridorLength,
+                    maxBacktrackAttempts:     settings.floodFillMaxBacktrackAttempts,
+                    forceMode:                tuning.forceMode,
+                    chaosFactor:              tuning.chaosFactor,
+                    seed:                     settings.floodFillSeed,
+                    maxRoomRegenerations:     tuning.maxRoomRegenerations,
+                    maxCorridorRegenerations: settings.maxCorridorRegenerations);
+            }
+            else
+            {
+                await OrganicGeneration.GenerateRooms(
+                    graph,
+                    roomFactory,
+                    boundsProvider,
+                    parent:                   null,
+                    areaPlacementFactor:      settings.areaPlacementFactor,
+                    repulsionFactor:          settings.repulsionFactor,
+                    simulationIterations:     settings.simulationIterations,
+                    forceMode:                tuning.forceMode,
+                    stiffnessFactor:          settings.stiffnessFactor,
+                    chaosFactor:              tuning.chaosFactor,
+                    // Real-time simulation is an editor preview: it returns before rooms are
+                    // placed, and the result below needs the finished layout.
+                    realTimeSimulation:       false,
+                    simulationSpeed:          settings.simulationSpeed,
+                    idealDistance:            tuning.idealDistance,
+                    allowRoomOverlap:         settings.allowRoomOverlap,
+                    maxRoomRegenerations:     tuning.maxRoomRegenerations,
+                    maxCorridorRegenerations: settings.maxCorridorRegenerations,
+                    repulsionScalingMode:     settings.repulsionScalingMode,
+                    bendFactor:               settings.bendFactor,
+                    generateCorridorsAfterSimulation: false);
+            }
 
             var dungeonParent = GameObject.Find("Generated_Dungeon");
 
-            if (dungeonParent != null && m_corridorTile != null)
+            if (dungeonParent != null && settings.corridorTile != null)
             {
                 var tilemapSystem = dungeonParent.GetComponent<DungeonTilemapSystem>();
                 if (tilemapSystem != null)
                 {
-                    tilemapSystem.corridorTile  = m_corridorTile;
-                    tilemapSystem.corridorWidth = m_corridorWidth;
-                    tilemapSystem.corridorType  = m_corridorType;
+                    tilemapSystem.corridorTile  = settings.corridorTile;
+                    tilemapSystem.corridorWidth = settings.corridorWidth;
+                    tilemapSystem.corridorType  = settings.corridorType;
                 }
-                OrganicGeneration.GenerateCorridors(graph, dungeonParent, m_maxCorridorRegenerations);
+                // The corridor stage is style-agnostic; FloodFillGeneration forwards to this too.
+                OrganicGeneration.GenerateCorridors(graph, dungeonParent, settings.maxCorridorRegenerations);
             }
 
             LastResult = DungeonGenerationResult.Build(dungeonParent);
@@ -282,7 +294,7 @@ namespace DungeonGraph
         /// configured floor label.
         /// </summary>
         /// <remarks>
-        /// The overwhelmingly common cause of a failure here is Addressables content that was
+        /// The common cause of a failure here is Addressables content that was
         /// never built, or a group that lost its schemas and was therefore excluded from the
         /// build. Both produce an empty catalogue for the label with no exception, so this
         /// check exists to turn a silent "nothing happened" into an actionable message.
@@ -291,8 +303,8 @@ namespace DungeonGraph
         {
             if (string.IsNullOrWhiteSpace(m_floorLabel))
             {
-                Debug.LogError("[DungeonGenerator] Floor Label is empty. Set it to the Addressables " +
-                               "label on your room prefabs, e.g. \"Floor_1\".", this);
+                Debug.LogError($"[DungeonGenerator] Graph '{m_dungeonGraph.name}' has no floor saved. Open it " +
+                               "in the Dungeon Graph editor and pick a Floor in the Dungeon Tools panel.", this);
                 return false;
             }
 
@@ -313,7 +325,7 @@ namespace DungeonGraph
                     "  2. The group for this floor has schemas. A group with none is silently " +
                     "excluded from the build; run Tools > Dungeon Graph > Setup > Reinitialize " +
                     "Addressables to repair it, then rebuild content.\n" +
-                    "  3. Floor Label matches the label on your room prefabs exactly.", this);
+                    "  3. The graph's Floor (Dungeon Tools panel) matches the label on your room prefabs exactly.", this);
             }
 
             Addressables.Release(handle);

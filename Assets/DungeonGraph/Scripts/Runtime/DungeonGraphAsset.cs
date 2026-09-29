@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 namespace DungeonGraph
 {
@@ -20,6 +21,48 @@ namespace DungeonGraph
         public int maxRoomRegenerations = 3;
     }
 
+    /// <summary>
+    /// Every other Dungeon Tools panel setting, saved on the graph asset so the runtime
+    /// <c>DungeonGenerator</c> builds exactly what the panel builds — EditorPrefs are per-machine
+    /// and do not exist in a player build. Per-style values live in <see cref="GenerationStyleTuning"/>.
+    /// </summary>
+    [Serializable]
+    public class DungeonGenerationSettings
+    {
+        /// <summary>
+        /// False until the Dungeon Tools panel first saves this graph. The panel uses it to seed
+        /// graphs created before settings moved here from the legacy EditorPrefs values.
+        /// </summary>
+        public bool initialized = false;
+
+        public GenerationStyle style = GenerationStyle.Organic;
+
+        /// <summary>Floor folder name, which is also the floor's Addressables label (e.g. "Floor_1").</summary>
+        public string floorName = "";
+
+        [Header("Corridors")]
+        public TileBase corridorTile;
+        public int corridorWidth = 2;
+        public CorridorType corridorType = CorridorType.Direct;
+        public int maxCorridorRegenerations = 3;
+
+        [Header("Organic")]
+        public float areaPlacementFactor = 2.0f;
+        public float repulsionFactor = 1.0f;
+        public int simulationIterations = 100;
+        public float stiffnessFactor = 1.0f;
+        public RepulsionScalingMode repulsionScalingMode = RepulsionScalingMode.Default;
+        public float bendFactor = 0.0f;
+        public bool allowRoomOverlap = false;
+        public bool realTimeSimulation = false;
+        public float simulationSpeed = 10f;
+
+        [Header("Grid")]
+        public int floodFillMaxCorridorLength = 40;
+        public int floodFillMaxBacktrackAttempts = 6;
+        public int floodFillSeed = 0;
+    }
+
     [CreateAssetMenu(menuName = "Dungeon Graph/New Graph")]
     public class DungeonGraphAsset : ScriptableObject
     {
@@ -35,8 +78,17 @@ namespace DungeonGraph
         [SerializeField]
         private GenerationStyleTuning m_floodFillTuning = new GenerationStyleTuning();
 
+        [SerializeField]
+        private DungeonGenerationSettings m_settings = new DungeonGenerationSettings();
+
         public List<DungeonGraphNode> Nodes => m_nodes;
         public List<DungeonGraphConnection> Connections => m_connections;
+
+        /// <summary>
+        /// The Dungeon Tools panel settings saved with this graph. Never null, even for a graph
+        /// asset serialized before this field existed.
+        /// </summary>
+        public DungeonGenerationSettings Settings => m_settings ??= new DungeonGenerationSettings();
 
         /// <summary>
         /// The Ideal Distance / Chaos Factor / Force Mode / Max Room Regenerations values this

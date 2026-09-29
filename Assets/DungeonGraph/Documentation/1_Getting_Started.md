@@ -230,15 +230,15 @@ In the Inspector:
 | Field | Value |
 | --- | --- |
 | **Dungeon Graph** | `Starter_Floors/Floor_1/01 - Default` |
-| **Floor Label** | `Floor_1` |
-| **Corridor Tile** | `BasicFloorRuleTile` |
-| **Corridor Width** | `2` |
-| **Corridor Type** | `Direct` |
 | **Generate On Start** | ✔ ticked |
 
-> **Important.** *Floor Label* is an **Addressable label**, not a folder path.
-> It must exactly match the label on your room prefabs. The bundled rooms use
-> `Floor_1` and `Floor_2`.
+That is all. The floor, corridor tile and every other setting come from the
+graph itself — whatever you chose in the Dungeon Tools panel in §1.5 is saved on
+the graph asset and used at runtime too.
+
+> **Important.** The graph's **Floor** doubles as the Addressables label the
+> rooms are loaded by, so it must match the label on your room prefabs. The
+> bundled rooms use `Floor_1` and `Floor_2`.
 
 ### Step 4 — Play
 
@@ -264,7 +264,7 @@ For your own code, see [4. Runtime API](4_Runtime_API.md).
 After a generation run, the Hierarchy contains:
 
 ```
-Master_Tilemap                 (you added this — holds every baked tile)
+Master_Tilemap                 (you added this — holds every baked tile and the wall collider)
 Generated_Dungeon              (created by the generator)
 ├── DungeonTilemapSystem       (component: grid snapping, merging, corridors)
 ├── DungeonConnectionVisualizer(component: Scene-view gizmos, editor only)
@@ -282,6 +282,11 @@ Generated_Dungeon              (created by the generator)
 - The room's own Tilemap renderers are **disabled** after merging, because their
   tiles now live in the master tilemap. The GameObjects stay so you can attach
   spawners, triggers and other gameplay objects to them.
+- **Master_Tilemap** gains a **Walls (Generated)** child: solid wall colliders
+  covering the outer edge tiles of every room and corridor (the ones drawn as
+  walls) and the space beyond. Interior floor is open.
+  They are rebuilt on every generation and never saved with the scene.
+  See [4.1 Collision](4_Runtime_API.md#collision).
 
 ---
 

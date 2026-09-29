@@ -27,29 +27,21 @@ scene that should build a dungeon.
 | Inspector field | Type | Default | Meaning |
 | --- | --- | --- | --- |
 | **Dungeon Graph** | `DungeonGraphAsset` | none | The graph to build. Required. |
-| **Floor Label** | `string` | `Floor_1` | Addressables label identifying the room set. |
-| **Corridor Tile** | `TileBase` | none | Corridors are skipped if this is null. |
-| **Corridor Width** | `int` | 2 | Corridor width in tiles. |
-| **Corridor Type** | `CorridorType` | Direct | `Direct`, `Angled` or `Both`. |
-| **Max Corridor Regenerations** | `int` | 3 | Re-route attempts per corridor. |
-| **Area Placement Factor** | `float` | 11.0 | See [3.2](3_Generation_Styles.md#32-organic-force-directed). |
-| **Repulsion Factor** | `float` | 30.0 | " |
-| **Stiffness Factor** | `float` | 20.0 | " |
-| **Ideal Distance** | `float` | 20 | " |
-| **Simulation Iterations** | `int` | 400 | " |
-| **Chaos Factor** | `float` | 0 | " |
-| **Bend Factor** | `float` | 0 | " |
-| **Repulsion Scaling Mode** | `RepulsionScalingMode` | Default | " |
-| **Allow Room Overlap** | `bool` | false | Skip the overlap check. |
-| **Max Room Regenerations** | `int` | 4 | Full layout re-rolls on overlap. |
 | **Generate On Start** | `bool` | true | Untick to trigger generation yourself. |
 
-The runtime `DungeonGenerator` component always uses the **Organic** style.
-**Grid**, the other style available in the Editor's Dungeon Tools panel, is
-not yet wired up to the runtime generator.
+Everything else — floor, generation style (Organic or Grid), corridor tile,
+width and type, and every tuning value — comes from the **graph's own settings**.
+The Dungeon Tools panel saves them onto the graph asset whenever you change
+them, so a runtime dungeon is built exactly as **Generate Dungeon** builds it in
+the Editor. To tune a runtime dungeon, open its graph and adjust the panel.
 
-> The Inspector values here are **separate** from the Dungeon Tools panel
-> settings, which are stored in EditorPrefs. Tuning one does not change the other.
+The graph's **Floor** is used as the Addressables floor label, so it must match
+the label on your room prefabs (the bundled rooms use `Floor_1` and `Floor_2`).
+If a graph has never had a floor selected, generation stops with a Console error
+telling you to pick one.
+
+*Real-Time Simulation* is an Editor preview and is ignored at runtime; the
+layout is always solved instantly.
 
 ### Scene requirements
 
@@ -60,6 +52,56 @@ The scene must contain a master tilemap. Drag
 Without one, rooms are still instantiated but their tiles are not merged and no
 corridors are drawn. The Console explains this.
 
+### Collision
+
+The **Dungeon Master Tilemap** component builds the dungeon's walls for you. No
+setup is needed, and it works the same on `Master_Tilemap.prefab` or on a Tilemap
+of your own.
+
+Two kinds of cell become solid wall:
+
+- **Edge tiles** — every painted tile with an empty cell directly north, south,
+  east or west. These are the tiles the bundled floor rule tiles draw as walls,
+  so what looks like a wall is one.
+- **The surrounding band** — every empty cell within **Wall Thickness** cells
+  (default 2, diagonals included) of a painted tile.
+
+The walls live on a child object named **Walls (Generated)**, which carries a
+static Rigidbody 2D, a Tilemap Collider 2D and a Composite Collider 2D in
+`Polygons` mode. Interior tiles have no collider, so objects on them move freely
+and are stopped by the walls around every room and corridor.
+
+**Corridor width.** A corridor's outer rows are edge tiles, so only its interior
+is walkable. Corridors are stamped `2 × ⌊Width / 2⌋ + 1` tiles wide, leaving
+`2 × ⌊Width / 2⌋ − 1` walkable: **Width 2 or 3 leaves a 1-tile lane, 4 or 5
+leaves 3.** Width 1 corridors have no walkable lane. Make sure the lane is wider
+than your player's collider.
+
+Edges are found by emptiness, not by tile type. Where two different rule tiles
+meet, for example a room painted with one tile and a corridor with another, each
+may draw a wall sprite along the seam, but the seam stays walkable.
+
+The walls are rebuilt after rooms are merged, after corridors are drawn, and on
+**Clear**. The collider is ready the moment `OnGenerationComplete` fires, so
+objects spawned there collide on their first physics step. The walls object is
+never saved to the scene or prefab; it is rebuilt from the floor whenever the
+scene loads. If you edit the master tilemap by hand, call
+`DungeonMasterTilemap.RebuildWalls()` afterwards.
+
+**Why solid walls:** an edge collider has no thickness. A body that crosses it
+within one physics step is resolved out the *far* side, so small or fast bodies
+pass straight through. A wall one or more cells thick always pushes a body back
+toward the floor.
+
+**For guaranteed collision,** set **Collision Detection** to `Continuous` on
+every moving Rigidbody 2D that must never leave the dungeon — players,
+projectiles, physics props. Continuous bodies cannot pass through static
+colliders at any speed. Discrete bodies are stopped by the walls unless they
+move more than about half the wall thickness in a single physics step; raise
+**Wall Thickness** if you rely on Discrete.
+
+Rooms carry no colliders of their own, and neither does the master tilemap.
+
 ---
 
 ## 4.2 Addressables setup
@@ -67,7 +109,7 @@ corridors are drawn. The Console explains this.
 Runtime generation loads rooms through Addressables. Every room prefab must carry
 **two** labels:
 
-1. A **floor label** matching `Floor Label` on the component — e.g. `Floor_1`.
+1. A **floor label** matching the graph's selected **Floor** — e.g. `Floor_1`.
 2. A **room-type label** — one of `Start`, `End`, `Hub`, `Boss`, `Reward`,
    `Basic_Small`, `Basic_Medium`, `Basic_Large`, or the name of a custom type.
 
