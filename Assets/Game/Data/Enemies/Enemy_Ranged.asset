@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a467076abd7443f4ab24dad6246eede, type: 3}
+  m_Name: Enemy_Ranged
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyDefinition
+  Prefab: {fileID: 0}
+  Rarity: 0
+  StartState: {fileID: 11400000, guid: 7096ca16ed5aa0c4aa94e24354691fb5, type: 2}
+  MaxHealth: 20
+  MoveSpeed: 2
+  Acceleration: 15
+  DetectionRange: 8
+  AttackRange: 6
+  LoseTargetRange: 11
+  AttackDamage: 10
+  AttackCooldown: 1
+  DeathLoot: {fileID: 11400000, guid: 6ab34f6a71d88074e80effe4d6d8e96c, type: 2}
+  DropChance: 0.1

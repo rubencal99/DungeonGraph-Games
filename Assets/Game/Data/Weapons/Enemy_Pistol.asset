@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df55947951bd24a2289f1f1d3bfd038d, type: 3}
+  m_Name: Enemy_Pistol
+  m_EditorClassIdentifier: 
+  WeaponPrefab: {fileID: 4544388895618666628, guid: 4401281c54274404cb7bddbcce9ff1a4, type: 3}
+  Icon: {fileID: 21300000, guid: 1616e4908b7c0284997f328329c92b1b, type: 3}
+  FireRate: 3.5
+  AmmoCapacity: 1200
+  Accuracy: 4
+  RecoilBloomPerShot: 1.5
+  MaxBloomAngle: 15
+  BloomRecoverySpeed: 20
+  ProjectileCount: 1
+  SpreadAngle: 0
+  ProjectilePrefab: {fileID: 6727158721347732457, guid: 115d0dbe6987e3b47b3cb01909806103, type: 3}
+  ProjectileSpeed: 18
+  ProjectileSize: 1
+  Damage: 10
+  Damping: 0
+  MinVelocity: 0
+  PenetrationCount: 0
+  PenetrableLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  ReboundCount: 0
+  FireCue: {fileID: 11400000, guid: 68f6c7f278414014ba8e39e8426f8249, type: 2}
+  EquipCue: {fileID: 11400000, guid: f26ff871eab475b4cb1661a7eacbbbbd, type: 2}

@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4937116375176821486}
   - component: {fileID: 4339124377309882045}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: InventoryContainer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a9cd5bdfbc5d4a329d54295cbdb807b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_playerAim: {fileID: 3900128822220381022}
+  m_aim: {fileID: 3900128822220381022}
 --- !u!1 &4272341723535480881
 GameObject:
   m_ObjectHideFlags: 0
@@ -58,7 +58,7 @@ GameObject:
   - component: {fileID: 5529776584363280183}
   - component: {fileID: 13455094513781313}
   - component: {fileID: 8160935268734062787}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Inventory
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,6 +94,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_inventory: {fileID: 8160935268734062787}
   m_playerAim: {fileID: 3900128822220381022}
+  m_fireAction: {fileID: 0}
   m_weaponParent: {fileID: 8282824047039781139}
 --- !u!114 &13455094513781313
 MonoBehaviour:
@@ -136,7 +137,7 @@ GameObject:
   - component: {fileID: 7180607931405525476}
   - component: {fileID: 5094478365449067711}
   - component: {fileID: 4492293512441252682}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Character
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -230,7 +231,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 975f497b131bf44b9b61d84ae6223d0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_playerAim: {fileID: 3900128822220381022}
+  m_aim: {fileID: 3900128822220381022}
 --- !u!95 &4492293512441252682
 Animator:
   serializedVersion: 7
@@ -268,7 +269,8 @@ GameObject:
   - component: {fileID: 670598395571764513}
   - component: {fileID: 1445677410096242102}
   - component: {fileID: 8738132653272326786}
-  m_Layer: 0
+  - component: {fileID: 2082666030948407590}
+  m_Layer: 8
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -421,3 +423,16 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: -0.91}
   m_Size: {x: 1.15, y: 0.53}
   m_Direction: 1
+--- !u!114 &2082666030948407590
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6354036693104365667}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2e20f8e9d2bc49a1a3ee4576c0a888c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Health
+  m_maxHealth: 100
