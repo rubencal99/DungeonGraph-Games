@@ -20,12 +20,12 @@ DungeonGraph Games is a multiplayer game hub, built in Unity 6.6, meant to host 
 - **Base project scaffolding.** A Unity 6000.0.67f1 URP 2D project exists with the Input System package wired up, plus a minimal stub `PlayerController` (Rigidbody2D + WASD via an Input Action) as a starting point — not a finished controller.
 - **Character controller, spawning, and weapons.** `PlayerController` does WASD with acceleration/deceleration. `PlayerAim` raycasts the mouse onto an AimPlane layer each frame and publishes the aim point, angle, and side; `CharacterFlip` and `WeaponAimRotator` consume that to mirror the sprite and rotate the gun as independent concerns. Cinemachine is installed and follows the player through `AimCameraTarget`, which pulls the camera toward the cursor. `PlayerSpawner` drops the player at the DungeonGraph Start room once generation finishes. `WeaponDefinition` ScriptableObjects drive fire rate, ammo, bloom/recoil, spread, multi-shot, and projectile behavior; `Weapon` fires them and `ProjectilePoolManager` pools every `Projectile` by prefab.
 - **Inventory, interaction, chests, and loot.** A 3-slot weapon inventory shown bottom-right and cycled with the scroll wheel, an `Interactable` base class triggered by pressing E, a nearest-target prompt over interactable world objects, and chests that roll nested weighted loot tables onto the floor. Design notes are kept under Details below because later milestones build on them.
+- **Audio.** One pooled, budgeted `AudioManager` that stays cheap when dozens of cues fire at once, driven by `AudioCueDefinition` assets, with a hand-built mixer. Hooks for running, interacting, shooting, and pickup/swap. Reference notes under Details.
 
 ## Ongoing milestones
 
-1. **Basic enemy and spawner.** Idle/Chase/Attack enemies driven by a simple state machine, spawned and pooled by an EnemySpawner, with performance as the top priority.
-2. **Audio.** One pooled, budgeted sound system that stays cheap when dozens of cues fire at once. Starting cues: player running, dodging, and interacting; weapon shooting, reloading, and pickup/swap.
-3. **SceneManager, main menu, lobby, and basic multiplayer.** A join-code lobby for up to 4 players built on Netcode for GameObjects + Unity Relay/Lobby, with character skin, starting weapon, and (tentative) map-vote selection. **Deliberately deferred** — everything before it is built single-player first, then made networked.
+1. **Basic enemies and spawner.** A melee and a ranged enemy sharing one asset-driven Idle/Chase/Attack brain, spawned and pooled by an EnemySpawner, with performance as the top priority.
+2. **SceneManager, main menu, lobby, and basic multiplayer.** A join-code lobby for up to 4 players built on Netcode for GameObjects + Unity Relay/Lobby, with character skin, starting weapon, and (tentative) map-vote selection. **Deliberately deferred** — everything before it is built single-player first, then made networked.
 
 **Standing tasklist — Weapon polish.** Never "done". A running list of polish, extensions, and improvements to the weapon system, picked from between milestones. See Details.
 
@@ -46,18 +46,12 @@ Built single-player. The reference implementation this was adapted from was a 3D
 - **Chests:** `Chest` is an `Interactable` and nothing more — two overrides. It rolls its table on open, fans the results out, and swaps a closed sprite for an open one. An opened chest returns false from `CanInteract`, which is all it takes for the prompt to stop appearing.
 - **One spawn path:** every weapon that enters the world goes through `WeaponPickupSpawner.Spawn` — inventory trades and chest drops alike. That single seam is what makes adding a pool later a change to one file. Pickups are deliberately *not* pooled today: drops happen at human speed, unlike projectiles.
 
-### 1. Basic enemy + EnemySpawner
+### Audio (finished — reference notes)
 
-- **Decision:** start with traditional GameObjects + object pooling + a simple state machine (Idle → Chase → Attack), not DOTS/ECS. Revisit ECS only if profiling later shows GameObject-based enemies are an actual bottleneck — no need to build for that possibility now.
-- **EnemyDefinition:** a ScriptableObject for stats (health, damage, speed, detection/attack range) so new enemy types don't require new code.
-- **EnemySpawner:** spawns pooled enemy instances rather than instantiating/destroying them; keep an eye on active enemy counts and avoid expensive per-enemy work (e.g. prefer cheap distance checks over physics raycasts where possible) since this milestone is explicitly performance-first.
-- **Loot on death:** reuse `LootTableDefinition` and `WeaponPickupSpawner` from the inventory/loot milestone rather than growing a second drop path.
-
-### 2. Audio
 
 The problem to solve is volume of sound, not variety. Four players on full-auto in a bullet-hell room can ask for hundreds of shots a second. Playing every one is expensive, and it sounds like mush anyway. The system decides which sounds are worth a voice.
 
-**Status: code written; editor setup (mixer, prefab, cue assets) is done by hand.** Scripts live in `Scripts/Audio/`.
+Scripts live in `Scripts/Audio/`. Mixer, prefab, and cue assets were built by hand.
 
 - **AudioCueDefinition:** a ScriptableObject per sound (`Assets > Create > Game > Audio Cue`): clip variations (random pick, optionally never the same twice in a row), and **Volume, Pitch, and Delay ranges rolled fresh every play** so repeats never sound identical. Also mixer group, spatial on/off with a distance range, priority (0–100), a **max instances** cap, and a **minimum interval**. The last two are what keep a minigun from stacking forty copies of one gunshot. Ranges draw as two-handled sliders through the `[MinMaxRange]` attribute (`Scripts/Editor/MinMaxRangeDrawer.cs`) — Unity has no built-in one.
 - **One player, one pool:** `AudioManager` (a prefab dropped into each scene, like `ProjectilePoolManager`) builds a fixed set of `AudioSource` voices in `Awake` and exposes static `AudioManager.Play(cue, position)`. A null cue is silent, not an error, so unassigned slots are safe. No `Instantiate`, no `PlayClipAtPoint`, no allocation per play. Voice Count lives on the prefab and should match Project Settings > Audio > Max Real Voices (32 by default). Voices are tracked by clock (start + delay + length/pitch), not `AudioSource.isPlaying`, which is unreliable during a delayed start.
@@ -73,21 +67,38 @@ The problem to solve is volume of sound, not variety. Four players on full-auto 
   - *Reload and dodge* — **neither mechanic exists yet**, so there are no cue slots for them. Each is one cue field plus one `AudioManager.Play` line when the feature lands.
 - **Multiplayer later:** audio stays client-local and is never networked itself. Each client plays sounds off the replicated events it already receives (a shot, a pickup), which is why hooks sit on gameplay events rather than on input.
 
+### 1. Basic enemies + EnemySpawner
+
+**Status: code written; editor setup (AI assets, prefabs, animations, layers) is done by hand.** Scripts live in `Scripts/Enemies/` and `Scripts/Enemies/AI/`.
+
+- **Decision:** traditional GameObjects + object pooling + a simple state machine, not DOTS/ECS. Revisit ECS only if profiling shows GameObject enemies are an actual bottleneck.
+- **Brain as assets:** `AIState` ScriptableObjects hold a list of `AIAction` assets (run every frame, in order) and a list of transitions. A transition is a set of `AICondition` assets that must all pass, each with a **Negate** tick box, plus a target state. OR = two transitions to the same state. Adding a behavior is one small `AIAction` / `AICondition` subclass plus an asset; nothing else changes. Actions and conditions are shared assets and must never store per-enemy data — that lives on `EnemyBrain` (target, cooldown, current state).
+- **Current assets:** actions `MoveToTarget`, `FaceTarget`, `AttackTarget`; conditions `TargetInRange` (Detection / Attack / LoseTarget, read from each enemy's `EnemyDefinition`, so one asset serves every enemy) and `HasLineOfSight` (one `Linecast` against wall layers). Tree: Idle → Chase when in Detection range and in sight; Chase → Attack when in Attack range and in sight; Chase → Idle when outside LoseTarget range; Attack → Chase when out of Attack range or out of sight.
+- **Two speeds:** `EnemyBrain` *thinks* (finds the nearest player from `PlayerController.All`, checks transitions) every 0.1 s with a random per-enemy offset, and *does* (runs actions) every frame. Conditions run at think rate, so a raycast in one is fine.
+- **One tree, two enemies:** `AttackTarget` calls whatever `IEnemyAttack` the prefab carries. `MeleeAttack` (on the Animator's object) fires an "Attack" trigger; an Animation Event on the impact frame calls `DealHit`, one non-allocating `OverlapCircle`. `RangedAttack` pulls the trigger on a real `Weapon` — same prefab, definition, projectiles, and cues the player uses.
+- **Shared aim:** `AimSource` is the base of `PlayerAim` (mouse) and `EnemyAim` (told by `FaceTarget`). `Weapon`, `WeaponAimRotator`, and `CharacterFlip` only read `AimSource`, which is why an enemy can hold a gun. `Weapon` no longer reads input; `WeaponHolder` owns the player's Attack action and calls `Weapon.TryFire()`. Enemy guns tick **Infinite Ammo** until reloading exists.
+- **Components on an enemy root:** `Enemy` (definition, health reset on spawn, death → loot + back to pool), `Health`, `EnemyBrain`, `EnemyMotor` (Rigidbody2D eased toward speed from the definition), `EnemyAim`, plus one `IEnemyAttack`.
+- **EnemyDefinition:** start state, health, speed/acceleration, detection/attack/lose-target ranges, melee damage, attack cooldown, death loot table + drop chance.
+- **Health:** `Health` is the shared `IDamageable` for player and enemies. It only counts down and raises `Damaged` / `Died`. **The player has no death handling yet.**
+- **Friendly fire:** handled by the physics layer matrix, not code — an EnemyProjectile layer that does not collide with Enemy.
+- **Not built yet:** pathfinding (enemies chase in a straight line), a Disabled/stunned condition (one `AICondition` reading a flag, added when stuns exist), enemy attack/hurt/death sounds, hit feedback.
+- **Loot on death:** reuses `LootTableDefinition` and `WeaponPickupSpawner` — no second drop path.
+
 ### Weapon polish (standing tasklist)
 
 Not a milestone to finish. Add items as they come up; tick them off as they ship.
 
-- [ ] **Audio** — shoot, reload, pickup/swap cues (built by the Audio milestone; this list tracks per-weapon tuning and new cues after it).
+- [ ] **Audio** — shoot, reload, pickup/swap cues (the Audio milestone built the system; this list tracks per-weapon tuning and new cues after it).
 - [ ] **Muzzle flash** — a short sprite or light flash at the barrel on each shot.
 - [ ] **Particles** — impact sparks where projectiles hit, shell casings, pooled like projectiles.
 - [ ] **Reloading** — the mechanic itself (magazine vs. reserve ammo, reload time from `WeaponDefinition`, reload key), plus a HUD indicator.
 - [ ] **Animations** — recoil kick, reload, and equip/swap animations, authored in the editor.
 
-### 3. SceneManager, main menu, lobby, multiplayer
+### 2. SceneManager, main menu, lobby, multiplayer
 
 - **Networking stack (decided):** Netcode for GameObjects + Unity Relay + Unity Lobby service. None of these packages are installed yet — add `com.unity.netcode.gameobjects`, Relay, Lobby, and Authentication via Package Manager / Unity Dashboard services. The already-present `com.unity.multiplayer.center` package is just Unity's setup/recommendation tool, not the netcode itself.
 - **Lobby flow:** host creates a lobby (gets a join code), other players join by entering it, up to 4 total. Each player picks a character skin, starting weapon, and votes on a map (tentative — confirm before building the voting UI itself).
 - **Scene flow:** a small generic SceneManager/loader that moves players from Main Menu → Lobby → Gameplay scene, ideally driven by data (scene references/Addressables) rather than hardcoded scene name strings.
 - **UI:** build menus and lobby screens by hand in the editor (Canvas + uGUI, since that's the UI package already in the project) rather than generating UI layouts from code.
 - **Testing:** for local multiplayer testing before a dedicated server exists, look at Unity's Multiplayer Play Mode package (lets you run multiple simulated clients in one Editor).
-- **What this milestone must revisit:** `Inventory.Local` (a static, which becomes per-client ownership), the fact that `Inventory` mutates itself directly (which becomes a server-authoritative path with client requests), and `Chest` open state plus pickup destruction (both must replicate, so two players cannot loot the same thing twice).
+- **What this milestone must revisit:** `Inventory.Local` (a static, which becomes per-client ownership), `PlayerController.All` and enemy targeting (enemy AI should run on the server only), the fact that `Inventory` mutates itself directly (which becomes a server-authoritative path with client requests), and `Chest` open state plus pickup destruction (both must replicate, so two players cannot loot the same thing twice).

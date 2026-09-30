@@ -13,7 +13,7 @@ using UnityEngine.InputSystem;
 ///   3. Create a Layer named "AimPlane" and set the Aim Plane Mask to it.
 ///   4. Leave Camera empty to use Camera.main, or assign one explicitly.
 /// </summary>
-public class PlayerAim : MonoBehaviour
+public class PlayerAim : AimSource
 {
     [SerializeField] private InputActionReference m_aimPositionAction;
     [SerializeField] private LayerMask m_aimPlaneMask;
@@ -21,16 +21,12 @@ public class PlayerAim : MonoBehaviour
     [SerializeField, Range(0f, 1f)] private float m_cameraPullStrength = 0.3f;
     [SerializeField] private Camera m_camera;
 
-    public Vector2 AimPoint { get; private set; }
-    public float AimAngleDegrees { get; private set; }
-    public Vector2 AimDirection { get; private set; } = Vector2.right;
-    public bool IsAimingLeft { get; private set; }
     public float CameraPullStrength => m_cameraPullStrength;
 
     private void Awake()
     {
         if (m_camera == null) m_camera = Camera.main;
-        AimPoint = transform.position;
+        SetAimPoint(transform.position);
     }
 
     private void OnEnable()
@@ -50,14 +46,8 @@ public class PlayerAim : MonoBehaviour
         Vector2 screenPos = m_aimPositionAction.action.ReadValue<Vector2>();
         Ray ray = m_camera.ScreenPointToRay(screenPos);
 
-        if (Physics.Raycast(ray, out RaycastHit hit, m_maxRayDistance, m_aimPlaneMask))
-        {
-            AimPoint = hit.point;
-        }
-
-        Vector2 toAim = AimPoint - (Vector2)transform.position;
-        AimAngleDegrees = Mathf.Atan2(toAim.y, toAim.x) * Mathf.Rad2Deg;
-        AimDirection = toAim.sqrMagnitude > 0.0001f ? toAim.normalized : AimDirection;
-        IsAimingLeft = AimPoint.x < transform.position.x;
+        // Missing the plane keeps the last point, re-derived from where the player now stands.
+        Vector2 point = Physics.Raycast(ray, out RaycastHit hit, m_maxRayDistance, m_aimPlaneMask) ? hit.point : AimPoint;
+        SetAimPoint(point);
     }
 }

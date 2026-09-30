@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -17,6 +18,12 @@ public class PlayerController : MonoBehaviour
 {
     private static readonly int SpeedParam = Animator.StringToHash("Speed");
 
+    // Every active player, so enemies can pick the nearest one from a list of at
+    // most four instead of searching the scene.
+    private static readonly List<PlayerController> s_all = new();
+
+    public static IReadOnlyList<PlayerController> All => s_all;
+
     [SerializeField] private InputActionReference m_moveAction;
     [SerializeField] private float m_moveSpeed = 5f;
     [SerializeField] private float m_acceleration = 30f;
@@ -34,11 +41,13 @@ public class PlayerController : MonoBehaviour
 
     private void OnEnable()
     {
+        s_all.Add(this);
         m_moveAction?.action.Enable();
     }
 
     private void OnDisable()
     {
+        s_all.Remove(this);
         m_moveAction?.action.Disable();
     }
 

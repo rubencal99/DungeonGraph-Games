@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 /// <summary>
 /// Rotates the Weapons container so it points at the player's aim point, and
@@ -12,18 +13,20 @@ using UnityEngine;
 ///
 /// Setup:
 ///   1. Add to the "Weapons" child of the Player prefab.
-///   2. Drag the Player root's PlayerAim component into the Player Aim slot.
+///   2. Drag the Player root's PlayerAim component into the Aim slot
+///      (an enemy's EnemyAim works the same way).
 /// </summary>
 public class WeaponAimRotator : MonoBehaviour
 {
-    [SerializeField] private PlayerAim m_playerAim;
+    [FormerlySerializedAs("m_playerAim")]
+    [SerializeField] private AimSource m_aim;
 
     private void Update()
     {
-        if (m_playerAim == null) return;
+        if (m_aim == null) return;
 
-        bool isFlipped = m_playerAim.IsAimingLeft;
-        float angle = m_playerAim.AimAngleDegrees;
+        bool isFlipped = m_aim.IsAimingLeft;
+        float angle = m_aim.AimAngleDegrees;
         float localZ = isFlipped ? angle - 180f : angle;
 
         Quaternion aim = Quaternion.Euler(0f, 0f, localZ);
