@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c9abbb4767f4cb489e6096bd301ea22, type: 3}
+  m_Name: Character_Tard
+  m_EditorClassIdentifier: Assembly-CSharp::CharacterDefinition
+  DisplayName: Tard
+  Portrait: {fileID: 666964372, guid: 786ae5cfc8a9a4127a33b816439308c5, type: 3}
+  Animator: {fileID: 22100000, guid: 0f05e09c999422841b88b04255600863, type: 2}

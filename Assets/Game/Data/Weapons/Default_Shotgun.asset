@@ -35,3 +35,4 @@ MonoBehaviour:
   ReboundCount: 1
   FireCue: {fileID: 11400000, guid: 72eea7653552202428b6de238e2a9220, type: 2}
   EquipCue: {fileID: 11400000, guid: f26ff871eab475b4cb1661a7eacbbbbd, type: 2}
+  FireShake: {fileID: 11400000, guid: b17447f03e095be40bf55c8fcf4e56ea, type: 2}

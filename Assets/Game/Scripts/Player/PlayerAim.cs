@@ -29,19 +29,13 @@ public class PlayerAim : AimSource
         SetAimPoint(transform.position);
     }
 
-    private void OnEnable()
-    {
-        m_aimPositionAction?.action.Enable();
-    }
-
-    private void OnDisable()
-    {
-        m_aimPositionAction?.action.Disable();
-    }
-
     private void Update()
     {
         if (m_aimPositionAction == null || m_camera == null) return;
+
+        // Paused or level over: a switched-off action reads (0, 0), which would
+        // snap the aim to the screen's corner. Hold the last aim instead.
+        if (!m_aimPositionAction.action.enabled) return;
 
         Vector2 screenPos = m_aimPositionAction.action.ReadValue<Vector2>();
         Ray ray = m_camera.ScreenPointToRay(screenPos);

@@ -12,12 +12,17 @@ using UnityEngine;
 /// Weapon field; one thrown out by a chest or a trade is told what it is by
 /// WeaponPickupSpawner.
 ///
+/// In a session the pickup is shared loot: pressing E asks the host for it
+/// through the sibling WeaponPickupNetwork, and whoever asks first gets it.
+///
 /// Setup:
 ///   1. Author one prefab: SpriteRenderer + CircleCollider2D (Is Trigger on) +
 ///      Rigidbody2D (Gravity Scale 0, Linear Damping ~6) + this component.
 ///   2. Add a PromptAnchor child and assign it to the Prompt View slot.
 ///   3. Assign a "Pick Up" InteractionPromptDefinition to the Prompt slot.
-///   4. Assign that prefab to the scene's WeaponPickupSpawner.
+///   4. Add a NetworkObject, WeaponPickupNetwork, NetworkTransform, and
+///      NetworkRigidbody2D, and add the prefab to the Network Prefabs list.
+///   5. Assign that prefab to the scene's WeaponPickupSpawner.
 /// </summary>
 [RequireComponent(typeof(Rigidbody2D))]
 public class WeaponPickup : Interactable
@@ -33,6 +38,7 @@ public class WeaponPickup : Interactable
     [SerializeField] private float m_launchSpeed = 3f;
 
     private Rigidbody2D m_rb;
+    private WeaponPickupNetwork m_network;
 
     /// <summary>Which weapon is lying here, or null before the spawner has said.</summary>
     public WeaponDefinition Definition => m_weapon;
@@ -40,6 +46,7 @@ public class WeaponPickup : Interactable
     private void Awake()
     {
         m_rb = GetComponent<Rigidbody2D>();
+        TryGetComponent(out m_network);
         ApplySprite();
     }
 
@@ -73,6 +80,14 @@ public class WeaponPickup : Interactable
     /// </summary>
     public override void Activate(GameObject interactor)
     {
+        // In a session the host decides who gets it, then hands it over.
+        if (m_network != null && m_network.IsSpawned)
+        {
+            PlayActivateCue();
+            m_network.RequestTake();
+            return;
+        }
+
         Inventory inventory = FindInventory(interactor);
         if (inventory == null) return;
         if (!inventory.TryPickup(m_weapon)) return;

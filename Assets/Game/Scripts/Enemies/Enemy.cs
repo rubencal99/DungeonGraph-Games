@@ -14,6 +14,12 @@ using UnityEngine;
 [RequireComponent(typeof(Health))]
 public class Enemy : MonoBehaviour
 {
+    /// <summary>
+    /// Enemies currently in the world. Pooled enemies count only while active, so
+    /// this is the "how many are left alive" number LevelProgress checks.
+    /// </summary>
+    public static int ActiveCount { get; private set; }
+
     [SerializeField] private EnemyDefinition m_definition;
 
     public EnemyDefinition Definition => m_definition;
@@ -28,9 +34,17 @@ public class Enemy : MonoBehaviour
     // Runs on every pool reuse, so a recycled enemy never comes back half dead.
     private void OnEnable()
     {
+        ActiveCount++;
         if (m_definition != null) Health.ResetHealth(m_definition.MaxHealth);
     }
 
+    private void OnDisable()
+    {
+        ActiveCount--;
+    }
+
+    // Health only announces a death on the machine that owns it, so in a session this
+    // runs on the host alone: one loot roll, one despawn for everyone.
     private void HandleDied(DamageInfo killingBlow)
     {
         DropLoot();

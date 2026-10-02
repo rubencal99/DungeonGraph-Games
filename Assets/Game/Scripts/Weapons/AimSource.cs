@@ -16,6 +16,13 @@ public abstract class AimSource : MonoBehaviour
     public Vector2 AimDirection { get; private set; } = Vector2.right;
     public bool IsAimingLeft { get; private set; }
 
+    /// <summary>
+    /// Points where another machine says this character is aiming. AimNetwork
+    /// calls this every frame on copies of players and enemies this machine
+    /// doesn't control.
+    /// </summary>
+    public void ApplyRemoteAim(Vector2 point) => SetAimPoint(point);
+
     /// <summary>Points at a world position and derives the angle, direction, and side from it.</summary>
     protected void SetAimPoint(Vector2 point)
     {

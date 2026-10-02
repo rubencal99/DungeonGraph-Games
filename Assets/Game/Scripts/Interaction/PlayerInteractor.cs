@@ -29,17 +29,12 @@ public class PlayerInteractor : MonoBehaviour
     private void OnEnable()
     {
         if (m_interactAction == null) return;
-        m_interactAction.action.Enable();
         m_interactAction.action.performed += OnInteractPerformed;
     }
 
     private void OnDisable()
     {
-        if (m_interactAction != null)
-        {
-            m_interactAction.action.performed -= OnInteractPerformed;
-            m_interactAction.action.Disable();
-        }
+        if (m_interactAction != null) m_interactAction.action.performed -= OnInteractPerformed;
 
         // Leave no prompt burning on whatever we were standing next to.
         SetTarget(null);

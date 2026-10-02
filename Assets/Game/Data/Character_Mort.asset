@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c9abbb4767f4cb489e6096bd301ea22, type: 3}
+  m_Name: Character_Mort
+  m_EditorClassIdentifier: Assembly-CSharp::CharacterDefinition
+  DisplayName: Mort
+  Portrait: {fileID: -656545529, guid: 8f3a7bba4ef1e458f93c23a695fa4fb0, type: 3}
+  Animator: {fileID: 22100000, guid: 8a0fc8f2930709f4b96f0dba5b92a1f2, type: 2}

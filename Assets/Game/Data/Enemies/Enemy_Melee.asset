@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a467076abd7443f4ab24dad6246eede, type: 3}
   m_Name: Enemy_Melee
   m_EditorClassIdentifier: Assembly-CSharp::EnemyDefinition
-  Prefab: {fileID: 0}
+  Prefab: {fileID: 1210340154369589201, guid: 81221a40ce5e28946ab623b20041460d, type: 3}
   Rarity: 0
   StartState: {fileID: 11400000, guid: 7096ca16ed5aa0c4aa94e24354691fb5, type: 2}
   MaxHealth: 30

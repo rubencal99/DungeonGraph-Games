@@ -19,8 +19,9 @@ public class Inventory : MonoBehaviour
 {
     public const int NoSlot = -1;
 
-    // The local player's inventory, so the HUD can find it without a scene
-    // search. Milestone 2 replaces this with per-client ownership.
+    // This machine's own player's inventory, so the HUD can find it without a
+    // scene search. Teammates' copies have inventories too; PlayerNetwork marks
+    // which one is ours.
     public static Inventory Local { get; private set; }
     public static event Action<Inventory> LocalChanged;
 
@@ -46,17 +47,13 @@ public class Inventory : MonoBehaviour
         m_slots = new WeaponDefinition[m_definition != null ? m_definition.SlotCount : 0];
     }
 
-    private void OnEnable()
+    /// <summary>Marks which inventory belongs to this machine's player. Null when it despawns.</summary>
+    public static void SetLocal(Inventory inventory)
     {
-        Local = this;
-        LocalChanged?.Invoke(this);
-    }
+        if (Local == inventory) return;
 
-    private void OnDisable()
-    {
-        if (Local != this) return;
-        Local = null;
-        LocalChanged?.Invoke(null);
+        Local = inventory;
+        LocalChanged?.Invoke(inventory);
     }
 
     /// <summary>What is in a slot, or null when it is empty or out of range.</summary>
@@ -100,6 +97,23 @@ public class Inventory : MonoBehaviour
         Changed?.Invoke();
         DropToWorld(displaced);
         return true;
+    }
+
+    /// <summary>
+    /// Overwrites every slot and the held slot at once. Used on a teammate's copy
+    /// to mirror what their own machine says they carry; never drops anything.
+    /// </summary>
+    public void SetContents(WeaponDefinition[] slots, int heldSlot)
+    {
+        if (m_slots == null) return;
+
+        for (int i = 0; i < m_slots.Length; i++)
+        {
+            m_slots[i] = i < slots.Length ? slots[i] : null;
+        }
+
+        HeldSlot = heldSlot >= 0 && heldSlot < m_slots.Length ? heldSlot : NoSlot;
+        Changed?.Invoke();
     }
 
     /// <summary>

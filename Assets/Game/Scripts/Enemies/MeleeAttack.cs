@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.Netcode.Components;
 using UnityEngine;
 
 /// <summary>
@@ -6,6 +7,11 @@ using UnityEngine;
 /// itself lands when the clip reaches an Animation Event calling DealHit, so
 /// the damage lines up with the frame where the weapon visibly connects. The
 /// hit is one overlap circle at Hit Point — no colliders to enable/disable.
+///
+/// In a session the host pulls the trigger through the NetworkAnimator, so the
+/// swing plays on every machine. Each machine's DealHit then checks the hit
+/// against its own copy of the players, and HealthNetwork counts it only on the
+/// victim's own machine, so the hit lands where that player saw the swing.
 ///
 /// Setup:
 ///   1. Add to the Character child of the enemy — the object with the Animator.
@@ -17,6 +23,7 @@ using UnityEngine;
 ///   4. Add an empty child "HitPoint" in front of the enemy, assign it, and set
 ///      Hit Radius (the red gizmo) to the swing's reach.
 ///   5. Set Target Layers to the Player layer.
+///   6. Add a NetworkAnimator to the same object.
 /// </summary>
 [RequireComponent(typeof(Animator))]
 public class MeleeAttack : MonoBehaviour, IEnemyAttack
@@ -28,6 +35,7 @@ public class MeleeAttack : MonoBehaviour, IEnemyAttack
     [SerializeField] private LayerMask m_targetLayers;
 
     private Animator m_animator;
+    private NetworkAnimator m_networkAnimator;
     private Enemy m_enemy;
     private ContactFilter2D m_filter;
 
@@ -38,6 +46,7 @@ public class MeleeAttack : MonoBehaviour, IEnemyAttack
     private void Awake()
     {
         m_animator = GetComponent<Animator>();
+        TryGetComponent(out m_networkAnimator);
         m_enemy = GetComponentInParent<Enemy>();
 
         m_filter = new ContactFilter2D { useTriggers = true };
@@ -46,7 +55,10 @@ public class MeleeAttack : MonoBehaviour, IEnemyAttack
 
     public bool TryAttack(Transform target)
     {
-        m_animator.SetTrigger(AttackParam);
+        // A trigger set on the Animator directly never leaves this machine.
+        if (m_networkAnimator != null && m_networkAnimator.IsSpawned) m_networkAnimator.SetTrigger(AttackParam);
+        else m_animator.SetTrigger(AttackParam);
+
         return true;
     }
 

@@ -17,6 +17,11 @@ using UnityEngine;
 /// "a gold chest mostly rolls the legendary pool" is a table whose rows are
 /// other tables. There is no chest-side notion of tiers at all.
 ///
+/// Chests live inside room prefabs, so they can't be network objects. In a
+/// session, pressing E asks DungeonNetwork to open "chest #N", the same chest
+/// on every machine. The host rolls the loot once, and every machine plays the
+/// lid opening.
+///
 /// Setup:
 ///   1. Author one prefab: SpriteRenderer + Animator + this component.
 ///   2. Add a PromptAnchor child and assign it to the Prompt View slot.
@@ -69,17 +74,34 @@ public class Chest : Interactable
     {
         if (m_isOpen) return;
 
+        if (DungeonNetwork.Instance != null && DungeonNetwork.Instance.IsSpawned)
+        {
+            DungeonNetwork.Instance.RequestOpenChest(this);
+            return;
+        }
+
+        Open();
+        DropLoot();
+    }
+
+    /// <summary>
+    /// Flips the chest open: lid, sound, prompt off. Safe to call twice. Runs on
+    /// every machine; the loot is a separate step only the host takes.
+    /// </summary>
+    public void Open()
+    {
+        if (m_isOpen) return;
+
         // Flagged open before anything is rolled. A chest that paid out twice is
         // a far worse bug than one that refuses a second open.
         m_isOpen = true;
         ApplyOpenVisual();
         PlayActivateCue();
-
         SetPromptVisible(false);
-        SpawnLoot();
     }
 
-    private void SpawnLoot()
+    /// <summary>Rolls the loot table and throws the results out. The host's job in a session.</summary>
+    public void DropLoot()
     {
         if (WeaponPickupSpawner.Instance == null)
         {

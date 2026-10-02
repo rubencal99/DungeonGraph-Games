@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a467076abd7443f4ab24dad6246eede, type: 3}
   m_Name: Enemy_Ranged
   m_EditorClassIdentifier: Assembly-CSharp::EnemyDefinition
-  Prefab: {fileID: 0}
+  Prefab: {fileID: 5976970253398396892, guid: 4a7ae2170d1db444b944479d073f07a1, type: 3}
   Rarity: 0
   StartState: {fileID: 11400000, guid: 7096ca16ed5aa0c4aa94e24354691fb5, type: 2}
   MaxHealth: 20

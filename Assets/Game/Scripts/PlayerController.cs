@@ -18,8 +18,11 @@ public class PlayerController : MonoBehaviour
 {
     private static readonly int SpeedParam = Animator.StringToHash("Speed");
 
-    // Every active player, so enemies can pick the nearest one from a list of at
-    // most four instead of searching the scene.
+    // Every player in the level, so enemies can pick the nearest one from a list of
+    // at most four instead of searching the scene. Registered for the object's
+    // whole life rather than while enabled: on a teammate's copy this component is
+    // switched off (it reads this machine's keyboard), but the host's enemies must
+    // still be able to chase that teammate.
     private static readonly List<PlayerController> s_all = new();
 
     public static IReadOnlyList<PlayerController> All => s_all;
@@ -37,18 +40,12 @@ public class PlayerController : MonoBehaviour
         m_rb = GetComponent<Rigidbody2D>();
         m_rb.gravityScale  = 0f;
         m_rb.freezeRotation = true;
-    }
-
-    private void OnEnable()
-    {
         s_all.Add(this);
-        m_moveAction?.action.Enable();
     }
 
-    private void OnDisable()
+    private void OnDestroy()
     {
         s_all.Remove(this);
-        m_moveAction?.action.Disable();
     }
 
     private void FixedUpdate()

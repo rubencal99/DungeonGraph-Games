@@ -20,7 +20,6 @@ public class InventoryInput : MonoBehaviour
     private void OnEnable()
     {
         if (m_cycleSlotAction == null) return;
-        m_cycleSlotAction.action.Enable();
         m_cycleSlotAction.action.performed += OnCyclePerformed;
     }
 
@@ -28,7 +27,6 @@ public class InventoryInput : MonoBehaviour
     {
         if (m_cycleSlotAction == null) return;
         m_cycleSlotAction.action.performed -= OnCyclePerformed;
-        m_cycleSlotAction.action.Disable();
     }
 
     private void OnCyclePerformed(InputAction.CallbackContext context)

@@ -10,6 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 450906198634916001}
   - component: {fileID: 5903256508155583426}
+  - component: {fileID: 6563441846981642441}
+  - component: {fileID: 5474349635663433259}
+  - component: {fileID: 3009393361172862624}
+  - component: {fileID: 5154962659764549302}
   m_Layer: 0
   m_Name: DungeonGenerator
   m_TagString: Untagged
@@ -44,5 +48,81 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 560ffdad7838d4f4fa72c7017f495c5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_dungeonGraph: {fileID: 11400000, guid: 94ec86b5a57237d4fb97f0183c7011f3, type: 2}
-  m_generateOnStart: 1
+  m_dungeonGraph: {fileID: 11400000, guid: bc20b74eaba363348b96e26dd40b1541, type: 2}
+  m_generateOnStart: 0
+--- !u!114 &6563441846981642441
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9136524559363154641}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e374880baf3ce4060a7d59f558c07d12, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_dungeon: {fileID: 3009393361172862624}
+  m_player: {fileID: 6354036693104365667, guid: 9b0dc1080d2644701a689214647e9aa2, type: 3}
+  m_aimPlane: {fileID: 0}
+  m_cinemachineCamera: {fileID: 7487519128279708386, guid: 063b5ebe2d40846118c36176d38cee5d, type: 3}
+  m_aimCameraTarget: {fileID: 7399029041579975157, guid: 17537133985ca464bae04afb90b32ceb, type: 3}
+  m_projectilePoolManager: {fileID: 4632819611753751174, guid: d255da208bc724010972749b605351f1, type: 3}
+  m_spawnSpread: 1
+--- !u!114 &5474349635663433259
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9136524559363154641}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 3190550868
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  m_InScenePlacedDisabledByDefault: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  m_InScenePlaced: 0
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
+--- !u!114 &3009393361172862624
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9136524559363154641}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e276fd37b8f24f44d8ad52258f8de9f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DungeonNetwork
+  ShowTopMostFoldoutHeaderGroup: 1
+  m_generator: {fileID: 5903256508155583426}
+  m_graph: {fileID: 11400000, guid: bc20b74eaba363348b96e26dd40b1541, type: 2}
+--- !u!114 &5154962659764549302
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9136524559363154641}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fce12bd0d3050b2469ea6abcce5a1111, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LevelProgress
+  ShowTopMostFoldoutHeaderGroup: 1
+  m_dungeon: {fileID: 3009393361172862624}
+  m_checkInterval: 0.25

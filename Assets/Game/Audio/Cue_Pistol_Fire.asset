@@ -15,10 +15,10 @@ MonoBehaviour:
   m_clips:
   - {fileID: 8300000, guid: f9ab20b4342184a46921955b3300481d, type: 3}
   - {fileID: 8300000, guid: fc96ad27ad7acc246bc0bf45b3ffd5c8, type: 3}
-  - {fileID: 8300000, guid: 385137d1f615f524ea78bc1569276ee5, type: 3}
+  - {fileID: 8300000, guid: e3a46507263c1f04d9cee05cf2ebc532, type: 3}
   m_avoidRepeat: 1
-  m_volume: {x: 0.9, y: 1}
-  m_pitch: {x: 0.95, y: 1.05}
+  m_volume: {x: 0.95, y: 1}
+  m_pitch: {x: 0.9, y: 0.9}
   m_delay: {x: 0, y: 0}
   m_mixerGroup: {fileID: -6515963052030546499, guid: c957b50e1005a294d9830fcfdd2e72bf, type: 2}
   m_spatial: 1

@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68d5e9a3d2b5bb14bbfcefcf017c8be6, type: 3}
+  m_Name: GameCatalog
+  m_EditorClassIdentifier: Assembly-CSharp::GameCatalog
+  m_weapons:
+  - {fileID: 11400000, guid: 6dd52fd95766a4d0986bdca5d9c19a86, type: 2}
+  - {fileID: 11400000, guid: 7d6be31bacd7b4accb3a44f59095009a, type: 2}
+  - {fileID: 11400000, guid: 0486e3c50cb024c3fab54c238921bd31, type: 2}
+  - {fileID: 11400000, guid: 81307a5066cf378429869790029aa71f, type: 2}
+  m_characters:
+  - {fileID: 11400000, guid: 2af51c4ddf5bad64aa1e0670cb95f97b, type: 2}
+  - {fileID: 11400000, guid: 83362bb67523bbd4c8d8d476abd3fc5e, type: 2}
+  - {fileID: 11400000, guid: dfc89b6e9a3bbd8498ed6286e1c38219, type: 2}
+  - {fileID: 11400000, guid: f2a4e407122ef884e83f9e5905e08e8f, type: 2}
+  m_enemies:
+  - {fileID: 11400000, guid: 9248121b0dc54b0468d05326b1060770, type: 2}
+  - {fileID: 11400000, guid: 289bceefeb8f43a4990d820da49bf5fd, type: 2}

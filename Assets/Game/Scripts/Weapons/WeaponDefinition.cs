@@ -48,4 +48,9 @@ public class WeaponDefinition : ScriptableObject
 
     [Tooltip("Played when this weapon is picked up or swapped to.")]
     public AudioCueDefinition EquipCue;
+
+    [Header("Feel")]
+    [Tooltip("Camera shake on each trigger pull, however many projectiles the shot fires. " +
+             "Only when the player fires; an enemy holding this weapon never shakes the screen.")]
+    public CameraShakeDefinition FireShake;
 }

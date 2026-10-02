@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c9abbb4767f4cb489e6096bd301ea22, type: 3}
+  m_Name: Character_Vita
+  m_EditorClassIdentifier: Assembly-CSharp::CharacterDefinition
+  DisplayName: Vita
+  Portrait: {fileID: -1831499363, guid: d8fe3dac3df3a489ab51480b9716e24f, type: 3}
+  Animator: {fileID: 22100000, guid: 00b40b5df4ad0fd48b9bcaf4771e9d23, type: 2}

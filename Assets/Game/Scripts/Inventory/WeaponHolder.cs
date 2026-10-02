@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 /// <summary>
 /// Draws whatever the inventory says is in hand. Keeps one instantiated weapon
@@ -8,9 +7,9 @@ using UnityEngine.InputSystem;
 /// Instantiate/Destroy pairs — and each weapon keeps its own ammo count while
 /// stowed.
 ///
-/// It is also the player's trigger finger: while Attack is held, it asks the
-/// held weapon to fire. The weapon itself never reads input, which is what lets
-/// an enemy hold the same gun.
+/// It never reads input. PlayerShooter pulls the trigger on whatever this holds,
+/// which is what lets a teammate's copy of you show the right gun without ever
+/// firing it on your machine.
 ///
 /// Stowed weapons are hidden rather than holstered: a top-down character sprite
 /// with three guns strapped to it reads as noise.
@@ -19,14 +18,12 @@ using UnityEngine.InputSystem;
 ///   1. Add to the Player prefab root.
 ///   2. Drag the Player's Inventory, PlayerAim, and the "Weapons" child
 ///      transform into the matching slots.
-///   3. Drag the "Attack" action (Player map) into the Fire Action slot.
-///   4. Give every WeaponDefinition asset a Weapon Prefab.
+///   3. Give every WeaponDefinition asset a Weapon Prefab.
 /// </summary>
 public class WeaponHolder : MonoBehaviour
 {
     [SerializeField] private Inventory m_inventory;
     [SerializeField] private PlayerAim m_playerAim;
-    [SerializeField] private InputActionReference m_fireAction;
 
     [Tooltip("The 'Weapons' child of the Player, which WeaponAimRotator spins. " +
              "Weapon instances are parented here so they inherit the aim rotation.")]
@@ -36,10 +33,11 @@ public class WeaponHolder : MonoBehaviour
     private Weapon[] m_instances;
     private Weapon m_held;
 
+    /// <summary>The weapon instance in hand, or null when empty-handed.</summary>
+    public Weapon Held => m_held;
+
     private void OnEnable()
     {
-        m_fireAction?.action.Enable();
-
         if (m_inventory == null) return;
         m_inventory.Changed += OnInventoryChanged;
 
@@ -50,11 +48,6 @@ public class WeaponHolder : MonoBehaviour
     private void OnDisable()
     {
         if (m_inventory != null) m_inventory.Changed -= OnInventoryChanged;
-    }
-
-    private void Update()
-    {
-        if (m_held != null && m_fireAction != null && m_fireAction.action.IsPressed()) m_held.TryFire();
     }
 
     /// <summary>
@@ -132,8 +125,9 @@ public class WeaponHolder : MonoBehaviour
         instance.transform.localRotation = Quaternion.identity;
 
         // The prefab cannot hold a reference to a scene object, so aim is wired
-        // here at spawn.
-        instance.Initialize(m_playerAim, gameObject);
+        // here at spawn. The owner is the player root (where PlayerAim lives), so
+        // its shots never hit the body that fired them.
+        instance.Initialize(m_playerAim, m_playerAim != null ? m_playerAim.gameObject : gameObject);
         return instance;
     }
 }

@@ -90,6 +90,10 @@ PrefabInstance:
       propertyPath: m_definition
       value: 
       objectReference: {fileID: 11400000, guid: 289bceefeb8f43a4990d820da49bf5fd, type: 2}
+    - target: {fileID: 405419337637971349, guid: c8637835ca5c302479ac8cad076e4711, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 1646061905
+      objectReference: {fileID: 0}
     - target: {fileID: 2104375377815215419, guid: c8637835ca5c302479ac8cad076e4711, type: 3}
       propertyPath: m_Name
       value: Enemy_Ranged
@@ -148,6 +152,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2104375377815215419, guid: c8637835ca5c302479ac8cad076e4711, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1604203119435993244}
+    - targetCorrespondingSourceObject: {fileID: 2104375377815215419, guid: c8637835ca5c302479ac8cad076e4711, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4492148005927005847}
   m_SourcePrefab: {fileID: 100100000, guid: c8637835ca5c302479ac8cad076e4711, type: 3}
 --- !u!114 &611619001486096097 stripped
 MonoBehaviour:
@@ -178,6 +185,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RangedAttack
   m_weapon: {fileID: 6818773514352939642}
+--- !u!114 &4492148005927005847
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5976970253398396892}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bdadae799d3c06c49b28e3f7ded84419, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ShotNetwork
+  ShowTopMostFoldoutHeaderGroup: 1
 --- !u!4 &8764836743851215865 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3919464361510918430, guid: c8637835ca5c302479ac8cad076e4711, type: 3}
